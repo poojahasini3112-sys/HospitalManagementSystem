@@ -100,6 +100,14 @@ public class Main {
 
             System.out.println("\n🎉 All database operations and tests completed successfully!");
 
+            // Launch the GUI Dashboard window
+            System.out.println("\n[Step 8] Launching Java Swing Desktop Dashboard...");
+            javax.swing.SwingUtilities.invokeLater(() -> {
+                com.hospital.ui.HospitalDashboard dashboard = new com.hospital.ui.HospitalDashboard();
+                dashboard.setVisible(true);
+            });
+            System.out.println("✅ Hospital Management System GUI Dashboard is now running!");
+
         } catch (SQLException e) {
             System.err.println("SQL Exception occurred during test run: " + e.getMessage());
             e.printStackTrace();
