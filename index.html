@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Management System | Java OOPS + MySQL DBMS</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg {
+            background: radial-gradient(circle at top right, #1e3a8a, #0f172a 60%);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-blue-500/20">
+                    <i class="fa-solid fa-hospital-user text-lg"></i>
+                </div>
+                <div>
+                    <span class="font-bold text-lg tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">CareSync HMS</span>
+                    <span class="text-xs ml-2 px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">Java + MySQL</span>
+                </div>
+            </div>
+            <div class="flex items-center space-x-6 text-sm font-medium">
+                <a href="#architecture" class="text-slate-400 hover:text-white transition">Architecture</a>
+                <a href="#database" class="text-slate-400 hover:text-white transition">Database & ER</a>
+                <a href="#oops" class="text-slate-400 hover:text-white transition">OOPS Design</a>
+                <a href="#tests" class="text-slate-400 hover:text-white transition">Test Results</a>
+                <a href="https://github.com/poojahasini3112-sys/HospitalManagementSystem" target="_blank" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white transition flex items-center space-x-2 shadow-md shadow-blue-600/25">
+                    <i class="fa-brands fa-github"></i>
+                    <span>GitHub Repo</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative gradient-bg pt-24 pb-20 overflow-hidden border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold mb-6">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span>Academic Project-Based Learning Plan | OOPS (Java) + DBMS (MySQL)</span>
+            </div>
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white max-w-4xl leading-tight">
+                Hospital Management <br>
+                <span class="bg-gradient-to-r from-blue-400 via-sky-300 to-indigo-400 bg-clip-text text-transparent">Integrated Desktop System</span>
+            </h1>
+            <p class="mt-6 text-lg text-slate-400 max-w-2xl leading-relaxed">
+                A robust 3-tier desktop healthcare system automating patient records, doctor scheduling, appointment management with multi-table SQL queries, and consultation billing.
+            </p>
+
+            <!-- Team Roles Badge Grid -->
+            <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl">
+                <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 text-xl font-bold">
+                        P
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white">Poojitha</h4>
+                        <p class="text-xs text-purple-400 font-medium">Database / DBMS & DAO Lead</p>
+                        <p class="text-xs text-slate-400 mt-0.5">Relational Schema, Constraints, SQL Queries & JDBC</p>
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 text-xl font-bold">
+                        M
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white">Moksha</h4>
+                        <p class="text-xs text-blue-400 font-medium">Frontend & UI Lead</p>
+                        <p class="text-xs text-slate-400 mt-0.5">Java Swing Dashboard, Forms, Events & Validation</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tech Badges -->
+            <div class="mt-10 flex flex-wrap gap-2 text-xs font-mono">
+                <span class="px-3 py-1.5 rounded-md bg-slate-900 border border-slate-800 text-slate-300"><i class="fa-brands fa-java text-orange-400 mr-1.5"></i> Java 17+ / 26</span>
+                <span class="px-3 py-1.5 rounded-md bg-slate-900 border border-slate-800 text-slate-300"><i class="fa-solid fa-database text-sky-400 mr-1.5"></i> MySQL 8.0</span>
+                <span class="px-3 py-1.5 rounded-md bg-slate-900 border border-slate-800 text-slate-300"><i class="fa-solid fa-plug text-yellow-400 mr-1.5"></i> JDBC (PreparedStatement)</span>
+                <span class="px-3 py-1.5 rounded-md bg-slate-900 border border-slate-800 text-slate-300"><i class="fa-solid fa-window-maximize text-emerald-400 mr-1.5"></i> Java Swing GUI</span>
+                <span class="px-3 py-1.5 rounded-md bg-slate-900 border border-slate-800 text-slate-300"><i class="fa-brands fa-git-alt text-red-400 mr-1.5"></i> Git & GitHub</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Architecture Section -->
+    <section id="architecture" class="py-20 max-w-7xl mx-auto px-6">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+            <h2 class="text-3xl font-bold text-white tracking-tight">3-Tier Software Architecture</h2>
+            <p class="text-slate-400 mt-3 text-sm">Separation of concerns ensuring UI code never mixes directly with database queries.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Tier 1 -->
+            <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 relative group hover:border-blue-500/50 transition">
+                <div class="w-10 h-10 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center mb-4">
+                    <i class="fa-solid fa-desktop"></i>
+                </div>
+                <div class="text-xs uppercase font-mono text-blue-400 tracking-wider">Layer 1</div>
+                <h3 class="text-xl font-bold text-white mt-1">Presentation Layer</h3>
+                <p class="text-sm text-slate-400 mt-2">Java Swing desktop forms with interactive validation, tables, patient click-to-edit, and real-time revenue cards.</p>
+                <div class="mt-4 pt-4 border-t border-slate-800/80 text-xs text-slate-500 font-mono">
+                    HospitalDashboard.java
+                </div>
+            </div>
+
+            <!-- Tier 2 -->
+            <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 relative group hover:border-purple-500/50 transition">
+                <div class="w-10 h-10 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center mb-4">
+                    <i class="fa-solid fa-network-wired"></i>
+                </div>
+                <div class="text-xs uppercase font-mono text-purple-400 tracking-wider">Layer 2</div>
+                <h3 class="text-xl font-bold text-white mt-1">Data Access Layer (DAO)</h3>
+                <p class="text-sm text-slate-400 mt-2">CRUD methods executing parameterized PreparedStatements to guarantee protection against SQL injection attacks.</p>
+                <div class="mt-4 pt-4 border-t border-slate-800/80 text-xs text-slate-500 font-mono">
+                    PatientDAO, DoctorDAO, AppointmentDAO, BillDAO
+                </div>
+            </div>
+
+            <!-- Tier 3 -->
+            <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 relative group hover:border-emerald-500/50 transition">
+                <div class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-4">
+                    <i class="fa-solid fa-server"></i>
+                </div>
+                <div class="text-xs uppercase font-mono text-emerald-400 tracking-wider">Layer 3</div>
+                <h3 class="text-xl font-bold text-white mt-1">Persistence Layer (DBMS)</h3>
+                <p class="text-sm text-slate-400 mt-2">Relational MySQL database enforcing referential integrity with primary/foreign keys and domain CHECK constraints.</p>
+                <div class="mt-4 pt-4 border-t border-slate-800/80 text-xs text-slate-500 font-mono">
+                    hospital_db (schema.sql)
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Database Schema & ER Section -->
+    <section id="database" class="py-20 bg-slate-900/50 border-y border-slate-800">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                <div>
+                    <span class="text-xs font-mono uppercase text-blue-400 tracking-wider">Database Design</span>
+                    <h2 class="text-3xl font-bold text-white mt-1">Relational Schema & Constraints</h2>
+                </div>
+                <p class="text-slate-400 text-sm max-w-md mt-4 md:mt-0">Designed and maintained by <strong>Poojitha</strong> with cascaded foreign keys and domain integrity validation.</p>
+            </div>
+
+            <!-- ER Relationship Visualizer -->
+            <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 mb-10 overflow-x-auto">
+                <div class="text-xs font-mono text-slate-400 mb-4 uppercase tracking-wider">Entity-Relationship (ER) Cardinality:</div>
+                <div class="flex items-center justify-between min-w-[700px] text-center font-mono text-sm py-4">
+                    <div class="px-5 py-3 rounded-xl bg-blue-950/40 border border-blue-500/30 text-blue-300 font-bold">
+                        <i class="fa-solid fa-user-injured mb-1 block text-lg"></i>
+                        PATIENT (1)
+                    </div>
+                    <div class="flex-1 flex flex-col items-center px-4">
+                        <span class="text-xs text-slate-500">1 : N (One-to-Many)</span>
+                        <div class="w-full h-0.5 bg-gradient-to-r from-blue-500 to-indigo-500 relative">
+                            <i class="fa-solid fa-arrow-right absolute right-0 top-1/2 -translate-y-1/2 text-indigo-400 text-xs"></i>
+                        </div>
+                    </div>
+                    <div class="px-6 py-4 rounded-xl bg-indigo-950/60 border border-indigo-500/50 text-indigo-300 font-bold shadow-lg shadow-indigo-500/10">
+                        <i class="fa-solid fa-calendar-check mb-1 block text-lg"></i>
+                        APPOINTMENT (N)
+                    </div>
+                    <div class="flex-1 flex flex-col items-center px-4">
+                        <span class="text-xs text-slate-500">1 : 1 (One-to-One)</span>
+                        <div class="w-full h-0.5 bg-gradient-to-r from-indigo-500 to-emerald-500 relative">
+                            <i class="fa-solid fa-arrow-right absolute right-0 top-1/2 -translate-y-1/2 text-emerald-400 text-xs"></i>
+                        </div>
+                    </div>
+                    <div class="px-5 py-3 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 font-bold">
+                        <i class="fa-solid fa-file-invoice-dollar mb-1 block text-lg"></i>
+                        BILL (1)
+                    </div>
+                </div>
+                <div class="text-center font-mono text-xs text-slate-500 mt-2">
+                    DOCTOR (1) ──── (1:N) ────▶ APPOINTMENT (N)
+                </div>
+            </div>
+
+            <!-- Tables Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Table: Patient -->
+                <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800">
+                    <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                        <span class="font-bold text-white font-mono flex items-center"><i class="fa-solid fa-table text-blue-400 mr-2"></i> patient</span>
+                        <span class="text-xs font-mono px-2 py-0.5 rounded bg-blue-500/10 text-blue-400">Primary Entity</span>
+                    </div>
+                    <ul class="divide-y divide-slate-800/60 text-xs font-mono mt-3 text-slate-300 space-y-2">
+                        <li class="pt-2 flex justify-between"><span class="text-yellow-400 font-semibold"><i class="fa-solid fa-key mr-1"></i> patient_id</span><span class="text-slate-500">INT AUTO_INCREMENT (PK)</span></li>
+                        <li class="pt-2 flex justify-between"><span>full_name</span><span class="text-slate-500">VARCHAR(100) NOT NULL</span></li>
+                        <li class="pt-2 flex justify-between"><span>age</span><span class="text-slate-500">INT CHECK (age &gt; 0)</span></li>
+                        <li class="pt-2 flex justify-between"><span>gender</span><span class="text-slate-500">VARCHAR(20) NOT NULL</span></li>
+                        <li class="pt-2 flex justify-between"><span>phone</span><span class="text-slate-500">VARCHAR(20) NOT NULL</span></li>
+                        <li class="pt-2 flex justify-between"><span>address</span><span class="text-slate-500">VARCHAR(255)</span></li>
+                    </ul>
+                </div>
+
+                <!-- Table: Doctor -->
+                <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800">
+                    <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                        <span class="font-bold text-white font-mono flex items-center"><i class="fa-solid fa-table text-purple-400 mr-2"></i> doctor</span>
+                        <span class="text-xs font-mono px-2 py-0.5 rounded bg-purple-500/10 text-purple-400">Primary Entity</span>
+                    </div>
+                    <ul class="divide-y divide-slate-800/60 text-xs font-mono mt-3 text-slate-300 space-y-2">
+                        <li class="pt-2 flex justify-between"><span class="text-yellow-400 font-semibold"><i class="fa-solid fa-key mr-1"></i> doctor_id</span><span class="text-slate-500">INT AUTO_INCREMENT (PK)</span></li>
+                        <li class="pt-2 flex justify-between"><span>full_name</span><span class="text-slate-500">VARCHAR(100) NOT NULL</span></li>
+                        <li class="pt-2 flex justify-between"><span>specialization</span><span class="text-slate-500">VARCHAR(100) NOT NULL</span></li>
+                        <li class="pt-2 flex justify-between"><span>phone</span><span class="text-slate-500">VARCHAR(20) NOT NULL</span></li>
+                        <li class="pt-2 flex justify-between"><span>consultation_fee</span><span class="text-slate-500">DECIMAL(10,2) CHECK &gt;= 0</span></li>
+                    </ul>
+                </div>
+
+                <!-- Table: Appointment -->
+                <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800">
+                    <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                        <span class="font-bold text-white font-mono flex items-center"><i class="fa-solid fa-table text-indigo-400 mr-2"></i> appointment</span>
+                        <span class="text-xs font-mono px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400">Relational Junction</span>
+                    </div>
+                    <ul class="divide-y divide-slate-800/60 text-xs font-mono mt-3 text-slate-300 space-y-2">
+                        <li class="pt-2 flex justify-between"><span class="text-yellow-400 font-semibold"><i class="fa-solid fa-key mr-1"></i> appointment_id</span><span class="text-slate-500">INT AUTO_INCREMENT (PK)</span></li>
+                        <li class="pt-2 flex justify-between"><span class="text-sky-400"><i class="fa-solid fa-link mr-1"></i> patient_id</span><span class="text-slate-500">INT FK &rarr; patient</span></li>
+                        <li class="pt-2 flex justify-between"><span class="text-sky-400"><i class="fa-solid fa-link mr-1"></i> doctor_id</span><span class="text-slate-500">INT FK &rarr; doctor</span></li>
+                        <li class="pt-2 flex justify-between"><span>appointment_date</span><span class="text-slate-500">DATE NOT NULL</span></li>
+                        <li class="pt-2 flex justify-between"><span>appointment_time</span><span class="text-slate-500">TIME NOT NULL</span></li>
+                        <li class="pt-2 flex justify-between"><span>status</span><span class="text-slate-500">Scheduled | Completed</span></li>
+                    </ul>
+                </div>
+
+                <!-- Table: Bill -->
+                <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800">
+                    <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                        <span class="font-bold text-white font-mono flex items-center"><i class="fa-solid fa-table text-emerald-400 mr-2"></i> bill</span>
+                        <span class="text-xs font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400">Billing Entity</span>
+                    </div>
+                    <ul class="divide-y divide-slate-800/60 text-xs font-mono mt-3 text-slate-300 space-y-2">
+                        <li class="pt-2 flex justify-between"><span class="text-yellow-400 font-semibold"><i class="fa-solid fa-key mr-1"></i> bill_id</span><span class="text-slate-500">INT AUTO_INCREMENT (PK)</span></li>
+                        <li class="pt-2 flex justify-between"><span class="text-sky-400"><i class="fa-solid fa-link mr-1"></i> appointment_id</span><span class="text-slate-500">INT FK &rarr; appointment</span></li>
+                        <li class="pt-2 flex justify-between"><span>amount</span><span class="text-slate-500">DECIMAL(10,2) CHECK &gt;= 0</span></li>
+                        <li class="pt-2 flex justify-between"><span>payment_status</span><span class="text-slate-500">Paid | Pending</span></li>
+                        <li class="pt-2 flex justify-between"><span>bill_date</span><span class="text-slate-500">DATE NOT NULL</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- OOPS Concepts Section -->
+    <section id="oops" class="py-20 max-w-7xl mx-auto px-6">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+            <span class="text-xs font-mono uppercase text-blue-400 tracking-wider">Object-Oriented Programming</span>
+            <h2 class="text-3xl font-bold text-white mt-1">Core Java OOPS Concepts Demonstrated</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="p-6 rounded-xl bg-slate-900 border border-slate-800">
+                <div class="w-10 h-10 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center mb-3">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h4 class="font-bold text-white text-base">Encapsulation</h4>
+                <p class="text-xs text-slate-400 mt-2 leading-relaxed">Entity classes keep attributes private and expose strictly validated getter and setter accessors.</p>
+            </div>
+            <div class="p-6 rounded-xl bg-slate-900 border border-slate-800">
+                <div class="w-10 h-10 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center mb-3">
+                    <i class="fa-solid fa-cubes"></i>
+                </div>
+                <h4 class="font-bold text-white text-base">Classes & Objects</h4>
+                <p class="text-xs text-slate-400 mt-2 leading-relaxed">Explicit domain representation of real-world entities: Patient, Doctor, Appointment, and Bill.</p>
+            </div>
+            <div class="p-6 rounded-xl bg-slate-900 border border-slate-800">
+                <div class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-3">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+                <h4 class="font-bold text-white text-base">Data Transfer (DTO)</h4>
+                <p class="text-xs text-slate-400 mt-2 leading-relaxed">AppointmentDetails DTO bundles joined attributes from multiple tables for display in Swing JTables.</p>
+            </div>
+            <div class="p-6 rounded-xl bg-slate-900 border border-slate-800">
+                <div class="w-10 h-10 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center mb-3">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <h4 class="font-bold text-white text-base">Exception Handling</h4>
+                <p class="text-xs text-slate-400 mt-2 leading-relaxed">Try-with-resources handles SQLExceptions, auto-closes connections, and surfaces user-friendly dialogs.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Test Results Checklist Section -->
+    <section id="tests" class="py-20 bg-slate-900/50 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="max-w-2xl mx-auto text-center mb-12">
+                <span class="text-xs font-mono uppercase text-emerald-400 tracking-wider">Quality Assurance</span>
+                <h2 class="text-3xl font-bold text-white mt-1">Verified Acceptance Test Results</h2>
+            </div>
+
+            <div class="max-w-3xl mx-auto bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden font-mono text-xs">
+                <div class="p-4 bg-slate-950/80 border-b border-slate-800 flex items-center justify-between">
+                    <span class="text-slate-400"><i class="fa-solid fa-terminal mr-2 text-blue-400"></i> Acceptance Test Suite (Main.java)</span>
+                    <span class="text-emerald-400 font-semibold flex items-center"><i class="fa-solid fa-circle-check mr-1.5"></i> 100% PASSED</span>
+                </div>
+                <div class="p-6 space-y-3">
+                    <div class="flex items-start space-x-3 text-slate-300">
+                        <i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>
+                        <div><strong class="text-white">MySQL Connectivity:</strong> Established live connection to hospital_db on localhost:3306</div>
+                    </div>
+                    <div class="flex items-start space-x-3 text-slate-300">
+                        <i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>
+                        <div><strong class="text-white">Doctor Listing:</strong> 4 doctor records loaded with specialization and fees</div>
+                    </div>
+                    <div class="flex items-start space-x-3 text-slate-300">
+                        <i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>
+                        <div><strong class="text-white">Patient Registration:</strong> Auto-increment ID generated & persisted cleanly</div>
+                    </div>
+                    <div class="flex items-start space-x-3 text-slate-300">
+                        <i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>
+                        <div><strong class="text-white">INNER JOIN Query:</strong> Appointments fetched linked with patient and doctor names</div>
+                    </div>
+                    <div class="flex items-start space-x-3 text-slate-300">
+                        <i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>
+                        <div><strong class="text-white">Aggregate Calculation:</strong> Total revenue calculated using SQL SUM(amount) = ₹900.00</div>
+                    </div>
+                    <div class="flex items-start space-x-3 text-slate-300">
+                        <i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>
+                        <div><strong class="text-white">Foreign Key Protection:</strong> Rejected appointment for invalid ID 99999 as expected</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-slate-800 bg-slate-950 text-slate-500 text-xs">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div>
+                <p class="font-semibold text-slate-300">Hospital Management System (HMS)</p>
+                <p class="mt-0.5">Academic Project for OOPS (Java) & DBMS (MySQL) • Prepared by Poojitha & Moksha</p>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="https://github.com/poojahasini3112-sys/HospitalManagementSystem" target="_blank" class="text-slate-400 hover:text-white transition flex items-center space-x-1">
+                    <i class="fa-brands fa-github text-base"></i>
+                    <span>poojahasini3112-sys</span>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
