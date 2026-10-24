@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MediTrack Super Specialty Hospital & Research Institute | World-Class Patient Care</title>
+    <title>MediTrack Health | Multi-Role Hospital Management & Care Portal</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome 6 Icons -->
@@ -11,14 +11,14 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
                         sans: ['Plus Jakarta Sans', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
                     },
                     colors: {
                         brand: {
@@ -29,968 +29,1054 @@
                             700: '#115e59',
                             800: '#134e4a',
                             900: '#042f2c',
-                            blue: '#0369a1',
-                            navy: '#0f172a'
+                            blue: '#0284c7'
                         }
                     }
                 }
             }
         }
     </script>
-    <style>
-        .gradient-banner {
-            background: linear-gradient(135deg, #042f2c 0%, #0f766e 50%, #0284c7 100%);
-        }
-        .hero-pattern {
-            background-color: #f8fafc;
-            background-image: radial-gradient(#cbd5e1 0.75px, transparent 0.75px), radial-gradient(#cbd5e1 0.75px, #f8fafc 0.75px);
-            background-size: 30px 30px;
-            background-position: 0 0, 15px 15px;
-        }
-    </style>
 </head>
-<body class="bg-white text-slate-800 font-sans antialiased selection:bg-teal-600 selection:text-white">
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-teal-600 selection:text-white min-h-screen flex flex-col">
 
-    <!-- Top Institutional Bar -->
-    <div class="bg-slate-900 text-slate-300 text-xs py-2.5 px-6 border-b border-slate-800">
+    <!-- Top Role Quick Switcher Banner (For Evaluators & Quick Testing) -->
+    <div class="bg-slate-900 text-slate-200 text-xs py-2 px-6 border-b border-slate-800 sticky top-0 z-50 shadow-md">
         <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
-            <div class="flex items-center space-x-6">
-                <span class="flex items-center text-red-400 font-bold">
-                    <span class="w-2 h-2 rounded-full bg-red-500 animate-ping mr-2"></span>
-                    24/7 Trauma & Emergency: <a href="tel:18004259999" class="ml-1 underline text-white">1800-425-9999</a>
-                </span>
-                <span class="hidden md:inline text-slate-600">|</span>
-                <span class="hidden md:flex items-center text-slate-300">
-                    <i class="fa-solid fa-droplet text-red-500 mr-1.5"></i> Blood Bank: +91 90000 11111
-                </span>
-                <span class="hidden lg:inline text-slate-600">|</span>
-                <span class="hidden lg:flex items-center text-slate-300">
-                    <i class="fa-solid fa-certificate text-amber-400 mr-1.5"></i> JCI & NABH Gold Accredited Campus
-                </span>
+            <div class="flex items-center space-x-2">
+                <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                <span class="font-bold text-white">Active Portal Mode:</span>
+                <span id="activeRoleBadge" class="px-2.5 py-0.5 rounded-full bg-slate-800 border border-slate-700 text-teal-300 font-mono font-semibold">Public Visitor</span>
             </div>
 
-            <div class="flex items-center space-x-6 text-xs">
-                <a href="#lab-portal" class="hover:text-teal-400 transition font-medium"><i class="fa-solid fa-file-waveform mr-1 text-teal-400"></i> Download Lab Reports</a>
-                <span class="text-slate-600">|</span>
-                <a href="#billing" class="hover:text-teal-400 transition font-medium"><i class="fa-solid fa-credit-card mr-1 text-teal-400"></i> Pay Hospital Bill</a>
-                <span class="text-slate-600">|</span>
-                <div class="flex items-center space-x-1 text-slate-400">
-                    <i class="fa-solid fa-globe"></i>
-                    <select class="bg-transparent border-none text-slate-300 focus:outline-none cursor-pointer">
-                        <option value="en" class="text-slate-900">English</option>
-                        <option value="te" class="text-slate-900">తెలుగు</option>
-                        <option value="hi" class="text-slate-900">हिन्दी</option>
-                    </select>
-                </div>
+            <div class="flex items-center space-x-2">
+                <span class="text-slate-400 hidden sm:inline text-[11px]">Switch Portal Login:</span>
+                <button onclick="loginAs('patient')" class="px-2.5 py-1 rounded-lg bg-teal-600/30 hover:bg-teal-600 text-teal-300 hover:text-white font-bold transition flex items-center space-x-1">
+                    <i class="fa-solid fa-hospital-user"></i>
+                    <span>Patient</span>
+                </button>
+                <button onclick="loginAs('doctor')" class="px-2.5 py-1 rounded-lg bg-blue-600/30 hover:bg-blue-600 text-blue-300 hover:text-white font-bold transition flex items-center space-x-1">
+                    <i class="fa-solid fa-user-doctor"></i>
+                    <span>Doctor</span>
+                </button>
+                <button onclick="loginAs('admin')" class="px-2.5 py-1 rounded-lg bg-purple-600/30 hover:bg-purple-600 text-purple-300 hover:text-white font-bold transition flex items-center space-x-1">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>Admin</span>
+                </button>
+                <button onclick="logout()" id="btnLogout" class="hidden px-2.5 py-1 rounded-lg bg-red-600/30 hover:bg-red-600 text-red-300 hover:text-white font-bold transition">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- Main Navigation Header -->
-    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-sm">
+    <!-- Main Navigation Bar -->
+    <nav class="bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <!-- Hospital Brand Logo -->
-            <a href="#" class="flex items-center space-x-3.5 group">
-                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-teal-700 via-teal-600 to-cyan-600 flex items-center justify-center text-white shadow-lg shadow-teal-700/20 group-hover:scale-105 transition">
-                    <i class="fa-solid fa-hospital-symbol text-2xl"></i>
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="logout()">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-teal-700 to-cyan-600 flex items-center justify-center text-white shadow-md shadow-teal-700/20">
+                    <i class="fa-solid fa-notes-medical text-2xl"></i>
                 </div>
                 <div>
-                    <div class="flex items-center space-x-1.5">
-                        <span class="font-extrabold text-2xl tracking-tight text-slate-900 font-sans">Medi<span class="text-teal-600">Track</span></span>
-                        <span class="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-teal-100 text-teal-800">Health</span>
-                    </div>
-                    <p class="text-[10px] text-slate-500 font-semibold tracking-wide uppercase">Super Specialty Hospital & Research Institute</p>
+                    <span class="font-extrabold text-2xl tracking-tight text-slate-900">Medi<span class="text-teal-700">Track</span></span>
+                    <p class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Super Specialty Healthcare Network</p>
                 </div>
-            </a>
+            </div>
 
-            <!-- Navigation Links -->
-            <nav class="hidden lg:flex items-center space-x-8 text-sm font-semibold text-slate-700">
-                <a href="#booking-engine" class="hover:text-teal-600 transition">Find a Doctor</a>
-                <a href="#specialties" class="hover:text-teal-600 transition">Clinical Specialties</a>
-                <a href="#health-packages" class="hover:text-teal-600 transition">Health Checkups</a>
-                <a href="#lab-portal" class="hover:text-teal-600 transition">Patient Services</a>
-                <a href="#billing" class="hover:text-teal-600 transition">Online Payments</a>
-            </nav>
-
-            <!-- Action Buttons -->
-            <div class="flex items-center space-x-3.5">
-                <a href="tel:18004259999" class="hidden sm:inline-flex items-center space-x-2 px-4 py-2.5 rounded-xl border border-red-200 bg-red-50 hover:bg-red-100 text-red-700 font-bold text-xs transition">
-                    <i class="fa-solid fa-truck-medical text-red-600"></i>
-                    <span>Ambulance</span>
-                </a>
-                <a href="#booking-engine" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 text-white font-bold text-xs transition shadow-md shadow-teal-700/25 flex items-center space-x-2">
-                    <i class="fa-solid fa-calendar-check text-sm"></i>
+            <div class="flex items-center space-x-3">
+                <button onclick="openLoginModal()" id="btnNavLogin" class="px-5 py-2.5 rounded-xl border border-slate-300 hover:border-teal-700 text-slate-800 font-bold text-xs transition flex items-center space-x-2">
+                    <i class="fa-solid fa-arrow-right-to-bracket text-teal-700"></i>
+                    <span>Portal Sign In</span>
+                </button>
+                <button onclick="loginAs('patient')" class="px-5 py-2.5 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs transition shadow-md shadow-teal-700/25 flex items-center space-x-2">
+                    <i class="fa-solid fa-calendar-check"></i>
                     <span>Book Appointment</span>
-                </a>
+                </button>
             </div>
         </div>
-    </header>
+    </nav>
 
-    <!-- HERO SECTION -->
-    <section class="relative hero-pattern pt-12 pb-20 border-b border-slate-200 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                
-                <!-- Left Hero Text & Search -->
-                <div class="lg:col-span-7 text-center lg:text-left">
-                    <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-teal-100/80 border border-teal-200 text-teal-900 text-xs font-bold mb-6">
-                        <i class="fa-solid fa-medal text-teal-700"></i>
-                        <span>Ranked #1 Super Specialty Hospital in the Region</span>
-                    </div>
+    <!-- MAIN VIEW CONTAINER -->
+    <main class="flex-1 max-w-7xl mx-auto px-6 py-8 w-full">
 
-                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.12]">
-                        World-Class Care, <br>
-                        <span class="text-teal-700 font-serif italic">Centered Around You.</span>
+        <!-- ================================================================= -->
+        <!-- VIEW 1: PUBLIC HOMEPAGE (LANDING VIEW)                            -->
+        <!-- ================================================================= -->
+        <div id="view-public" class="space-y-12">
+            <!-- Hero -->
+            <div class="bg-gradient-to-r from-teal-900 via-teal-800 to-cyan-900 rounded-3xl p-8 md:p-14 text-white shadow-xl relative overflow-hidden">
+                <div class="max-w-2xl relative z-10">
+                    <span class="px-3 py-1 rounded-full bg-teal-700/60 text-teal-200 text-xs font-bold border border-teal-500/30">
+                        <i class="fa-solid fa-hospital mr-1"></i> Multi-Role Hospital Management System
+                    </span>
+                    <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mt-4 leading-tight">
+                        Integrated Clinical Care & Hospital Intelligence
                     </h1>
-
-                    <p class="mt-5 text-base md:text-lg text-slate-600 max-w-2xl font-normal leading-relaxed">
-                        From routine consultations to complex tertiary surgeries, MediTrack provides trusted clinical excellence with 50+ senior consultants, 24/7 intensive care, and digital patient access.
+                    <p class="text-teal-100 text-sm md:text-base mt-4 leading-relaxed font-normal">
+                        Select a portal below to experience tailored dashboards for <strong>Patients</strong>, <strong>Doctors</strong>, and <strong>Hospital Administrators</strong>.
                     </p>
-
-                    <!-- Fast Quick Access Bar -->
-                    <div class="mt-8 bg-white p-2.5 rounded-2xl shadow-xl shadow-slate-200/60 border border-slate-200 max-w-xl mx-auto lg:mx-0">
-                        <div class="flex flex-col sm:flex-row items-center gap-2">
-                            <div class="flex-1 flex items-center px-3 py-2 w-full">
-                                <i class="fa-solid fa-magnifying-glass text-slate-400 mr-3"></i>
-                                <input type="text" id="quickDoctorSearch" onkeyup="handleQuickSearch(event)" placeholder="Search doctor by name or specialty (e.g. Heart, Skin)..." class="w-full text-xs text-slate-800 placeholder-slate-400 focus:outline-none">
-                            </div>
-                            <a href="#doctors-catalog" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs transition flex items-center justify-center space-x-2 shrink-0">
-                                <span>Find Care</span>
-                                <i class="fa-solid fa-arrow-right text-xs"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Trust Stats Counter -->
-                    <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-6 pt-6 border-t border-slate-200/80">
-                        <div>
-                            <div class="text-3xl font-extrabold text-slate-900">50+</div>
-                            <div class="text-xs text-slate-500 font-medium mt-0.5">Senior Specialists</div>
-                        </div>
-                        <div>
-                            <div class="text-3xl font-extrabold text-teal-700">350+</div>
-                            <div class="text-xs text-slate-500 font-medium mt-0.5">Advanced ICU Beds</div>
-                        </div>
-                        <div>
-                            <div class="text-3xl font-extrabold text-slate-900">99.4%</div>
-                            <div class="text-xs text-slate-500 font-medium mt-0.5">Patient Satisfaction</div>
-                        </div>
-                        <div>
-                            <div class="text-3xl font-extrabold text-teal-700">24/7</div>
-                            <div class="text-xs text-slate-500 font-medium mt-0.5">Emergency & Trauma</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Right Hero Image Showcase -->
-                <div class="lg:col-span-5 relative">
-                    <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white ring-1 ring-slate-200">
-                        <!-- High Quality Realistic Hospital Care Image -->
-                        <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=800&q=80" alt="Doctor consulting patient" class="w-full h-[450px] object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex flex-col justify-end p-6 text-white">
-                            <span class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-teal-500/90 text-white text-[11px] font-bold w-fit mb-2">
-                                <i class="fa-solid fa-award"></i>
-                                <span>Center of Excellence</span>
-                            </span>
-                            <h3 class="text-xl font-bold">Comprehensive Multi-Disciplinary Hospital</h3>
-                            <p class="text-xs text-slate-200 mt-1">Equipped with 3T MRI, 128-Slice Cardiac CT, and Modular Laminar Flow OTs.</p>
-                        </div>
-                    </div>
-
-                    <!-- Floating Certified Card -->
-                    <div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-2xl shadow-xl border border-slate-200 hidden sm:flex items-center space-x-3.5 z-20">
-                        <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center text-2xl font-bold">
-                            <i class="fa-solid fa-star text-amber-400"></i>
-                        </div>
-                        <div>
-                            <div class="font-extrabold text-slate-900 text-sm">4.9 / 5.0 Rating</div>
-                            <div class="text-[11px] text-slate-500 font-medium">Over 15,000+ Verified Patient Reviews</div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- REALISTIC STEP-BY-STEP APPOINTMENT BOOKING ENGINE -->
-    <section id="booking-engine" class="py-20 max-w-7xl mx-auto px-6">
-        <div class="text-center max-w-2xl mx-auto mb-14">
-            <span class="text-xs font-bold text-teal-700 uppercase tracking-wider">Fast & Hassle-Free</span>
-            <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mt-1">Book an Outpatient Consultation</h2>
-            <p class="text-slate-500 text-sm mt-2">Schedule your doctor visit in 3 simple steps. Receive an instant digital appointment slip with token number.</p>
-        </div>
-
-        <div class="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden max-w-5xl mx-auto">
-            <!-- Booking Tabs Header -->
-            <div class="bg-slate-50 px-8 py-4 border-b border-slate-200 flex flex-wrap items-center justify-between gap-4">
-                <div class="flex items-center space-x-6">
-                    <button class="font-bold text-xs text-teal-800 border-b-2 border-teal-700 pb-1 flex items-center space-x-2">
-                        <i class="fa-solid fa-hospital-user text-teal-600"></i>
-                        <span>Hospital In-Person Visit</span>
-                    </button>
-                    <button class="font-semibold text-xs text-slate-500 hover:text-slate-800 pb-1 flex items-center space-x-2 transition">
-                        <i class="fa-solid fa-video text-slate-400"></i>
-                        <span>Teleconsultation Video Visit</span>
-                    </button>
-                </div>
-                <div class="text-xs text-slate-500">
-                    <i class="fa-solid fa-shield-halved text-emerald-600 mr-1"></i> Instant OPD Slot Reservation
-                </div>
-            </div>
-
-            <!-- Booking Form Grid -->
-            <form onsubmit="handleAppointmentBooking(event)" class="p-8 md:p-10">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    
-                    <!-- 1. Department -->
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">1. Medical Specialty *</label>
-                        <select id="selSpecialty" onchange="filterDoctorsBySpecialty()" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs text-slate-900 font-semibold focus:outline-none focus:ring-2 focus:ring-teal-600 focus:bg-white transition">
-                            <option value="All">All Clinical Departments</option>
-                            <option value="Cardiology">Cardiology (Heart Care)</option>
-                            <option value="Dermatology">Dermatology (Skin & Allergy)</option>
-                            <option value="General Medicine">General Medicine & Diabetology</option>
-                            <option value="Pediatrics">Pediatrics & Child Health</option>
-                        </select>
-                    </div>
-
-                    <!-- 2. Doctor -->
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">2. Select Consultant Doctor *</label>
-                        <select id="selDoctor" onchange="syncSelectedDoctorFee()" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs text-slate-900 font-semibold focus:outline-none focus:ring-2 focus:ring-teal-600 focus:bg-white transition">
-                            <!-- Populated dynamically -->
-                        </select>
-                    </div>
-
-                    <!-- 3. Preferred Date -->
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">3. Appointment Date *</label>
-                        <input type="date" id="selDate" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs text-slate-900 font-semibold focus:outline-none focus:ring-2 focus:ring-teal-600 focus:bg-white transition">
-                    </div>
-
-                </div>
-
-                <!-- Doctor Snapshot Preview Bar -->
-                <div id="doctorSnapshot" class="mb-8 p-4 rounded-2xl bg-teal-50/70 border border-teal-200/80 flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <div class="flex items-center space-x-3.5">
-                        <img id="snapDocImg" src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=150&q=80" alt="Doctor" class="w-12 h-12 rounded-xl object-cover border border-teal-200">
-                        <div>
-                            <h4 id="snapDocName" class="font-extrabold text-slate-900 text-sm">Dr. Ramesh Rao</h4>
-                            <p id="snapDocSpec" class="text-xs text-teal-800 font-medium">Head of Cardiology • 22+ Years Clinical Experience</p>
-                        </div>
-                    </div>
-                    <div class="text-right flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto">
-                        <span class="text-xs text-slate-500 font-medium">Consultation Fee</span>
-                        <span id="snapDocFee" class="text-lg font-extrabold text-teal-800">₹800.00</span>
-                    </div>
-                </div>
-
-                <!-- Slot Selection -->
-                <div class="mb-8">
-                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-3">Available Time Slots (Today & Tomorrow)</label>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3 text-xs" id="timeSlotsContainer">
-                        <button type="button" onclick="selectSlot(this)" class="slot-btn py-2.5 px-3 rounded-xl border border-teal-600 bg-teal-600 text-white font-bold transition">09:30 AM</button>
-                        <button type="button" onclick="selectSlot(this)" class="slot-btn py-2.5 px-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 font-semibold transition">10:15 AM</button>
-                        <button type="button" onclick="selectSlot(this)" class="slot-btn py-2.5 px-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 font-semibold transition">11:00 AM</button>
-                        <button type="button" onclick="selectSlot(this)" class="slot-btn py-2.5 px-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 font-semibold transition">02:30 PM</button>
-                        <button type="button" onclick="selectSlot(this)" class="slot-btn py-2.5 px-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 font-semibold transition">04:00 PM</button>
-                        <button type="button" onclick="selectSlot(this)" class="slot-btn py-2.5 px-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 font-semibold transition">05:30 PM</button>
-                    </div>
-                </div>
-
-                <!-- Patient Personal Details -->
-                <div class="pt-6 border-t border-slate-200">
-                    <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-4">Patient Information</h4>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-                        <div>
-                            <label class="block text-xs text-slate-600 mb-1">Full Name *</label>
-                            <input type="text" id="patientName" required placeholder="e.g. Ramesh Varma" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:bg-white transition">
-                        </div>
-                        <div>
-                            <label class="block text-xs text-slate-600 mb-1">Mobile Number *</label>
-                            <input type="tel" id="patientPhone" required placeholder="10-digit mobile" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:bg-white transition">
-                        </div>
-                        <div>
-                            <label class="block text-xs text-slate-600 mb-1">Age *</label>
-                            <input type="number" id="patientAge" required min="1" max="120" placeholder="e.g. 35" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:bg-white transition">
-                        </div>
-                        <div>
-                            <label class="block text-xs text-slate-600 mb-1">Gender *</label>
-                            <select id="patientGender" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:bg-white transition">
-                                <option>Male</option>
-                                <option>Female</option>
-                                <option>Other</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-slate-200">
-                    <div class="text-xs text-slate-500">
-                        <i class="fa-solid fa-lock text-teal-600 mr-1.5"></i> All medical records are kept strictly confidential under HIPAA guidelines.
-                    </div>
-                    <button type="submit" class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold text-sm transition shadow-lg shadow-teal-700/30 flex items-center justify-center space-x-2">
-                        <i class="fa-solid fa-check-circle"></i>
-                        <span>Confirm Appointment Pass</span>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </section>
-
-    <!-- CLINICAL SPECIALTIES (CENTERS OF EXCELLENCE) -->
-    <section id="specialties" class="py-20 bg-slate-100/70 border-y border-slate-200">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center max-w-2xl mx-auto mb-16">
-                <span class="text-xs font-bold text-teal-700 uppercase tracking-wider">Comprehensive Care</span>
-                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mt-1">Centers of Clinical Excellence</h2>
-                <p class="text-slate-500 text-sm mt-2">Delivering cutting-edge clinical pathways, robotic surgeries, and preventive health screenings.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Cardiology -->
-                <div class="bg-white rounded-3xl p-8 border border-slate-200/90 shadow-sm hover:shadow-xl transition group">
-                    <div class="w-14 h-14 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition">
-                        <i class="fa-solid fa-heart-pulse"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-900">Institute of Cardiac Sciences</h3>
-                    <p class="text-xs text-slate-600 mt-3 leading-relaxed">
-                        Dedicated 24/7 Cath Lab, primary angioplasty, electrophysiology, minimally invasive valve replacements, and preventive cardiac wellness.
-                    </p>
-                    <ul class="mt-5 space-y-2 text-xs font-semibold text-slate-700">
-                        <li><i class="fa-solid fa-circle-check text-teal-600 mr-2"></i> 24/7 STEMI Heart Attack Care</li>
-                        <li><i class="fa-solid fa-circle-check text-teal-600 mr-2"></i> 3D Echocardiography & TMT</li>
-                    </ul>
-                    <a href="#booking-engine" class="mt-6 inline-flex items-center text-xs font-bold text-teal-700 hover:text-teal-800 transition">Book Cardiac Consult &rarr;</a>
-                </div>
-
-                <!-- Dermatology -->
-                <div class="bg-white rounded-3xl p-8 border border-slate-200/90 shadow-sm hover:shadow-xl transition group">
-                    <div class="w-14 h-14 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition">
-                        <i class="fa-solid fa-hand-dots"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-900">Dermatology & Cosmetology</h3>
-                    <p class="text-xs text-slate-600 mt-3 leading-relaxed">
-                        Comprehensive diagnosis and management of chronic skin disorders, psoriasis, clinical trichology, pediatric dermatology, and cosmetic therapies.
-                    </p>
-                    <ul class="mt-5 space-y-2 text-xs font-semibold text-slate-700">
-                        <li><i class="fa-solid fa-circle-check text-teal-600 mr-2"></i> Laser & Phototherapy Suite</li>
-                        <li><i class="fa-solid fa-circle-check text-teal-600 mr-2"></i> Skin Allergy & Patch Testing</li>
-                    </ul>
-                    <a href="#booking-engine" class="mt-6 inline-flex items-center text-xs font-bold text-teal-700 hover:text-teal-800 transition">Book Dermatology Consult &rarr;</a>
-                </div>
-
-                <!-- Pediatrics -->
-                <div class="bg-white rounded-3xl p-8 border border-slate-200/90 shadow-sm hover:shadow-xl transition group">
-                    <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition">
-                        <i class="fa-solid fa-baby"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-900">Pediatrics & Neonatology (NICU)</h3>
-                    <p class="text-xs text-slate-600 mt-3 leading-relaxed">
-                        Compassionate medical care from newborns through adolescence. Level III Neonatal ICU, routine pediatric immunizations, and growth monitoring.
-                    </p>
-                    <ul class="mt-5 space-y-2 text-xs font-semibold text-slate-700">
-                        <li><i class="fa-solid fa-circle-check text-teal-600 mr-2"></i> Level-3 Advanced NICU / PICU</li>
-                        <li><i class="fa-solid fa-circle-check text-teal-600 mr-2"></i> Vaccination & Developmental Clinic</li>
-                    </ul>
-                    <a href="#booking-engine" class="mt-6 inline-flex items-center text-xs font-bold text-teal-700 hover:text-teal-800 transition">Book Pediatric Consult &rarr;</a>
-                </div>
-
-                <!-- General Medicine -->
-                <div class="bg-white rounded-3xl p-8 border border-slate-200/90 shadow-sm hover:shadow-xl transition group">
-                    <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition">
-                        <i class="fa-solid fa-stethoscope"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-900">Internal Medicine & Diabetology</h3>
-                    <p class="text-xs text-slate-600 mt-3 leading-relaxed">
-                        Comprehensive multi-system medical consultations, diabetes reversal guidance, hypertension, acute infectious diseases, and geriatric care.
-                    </p>
-                    <ul class="mt-5 space-y-2 text-xs font-semibold text-slate-700">
-                        <li><i class="fa-solid fa-circle-check text-teal-600 mr-2"></i> Chronic Disease Reversal Care</li>
-                        <li><i class="fa-solid fa-circle-check text-teal-600 mr-2"></i> Dedicated Geriatric Outpatient OPD</li>
-                    </ul>
-                    <a href="#booking-engine" class="mt-6 inline-flex items-center text-xs font-bold text-teal-700 hover:text-teal-800 transition">Book Physician Consult &rarr;</a>
-                </div>
-
-                <!-- Orthopedics -->
-                <div class="bg-white rounded-3xl p-8 border border-slate-200/90 shadow-sm hover:shadow-xl transition group">
-                    <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition">
-                        <i class="fa-solid fa-bone"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-900">Orthopedics & Joint Replacement</h3>
-                    <p class="text-xs text-slate-600 mt-3 leading-relaxed">
-                        Computer-navigated total knee and hip replacements, arthroscopic sports injury treatments, complex trauma surgeries, and physiotherapy.
-                    </p>
-                    <ul class="mt-5 space-y-2 text-xs font-semibold text-slate-700">
-                        <li><i class="fa-solid fa-circle-check text-teal-600 mr-2"></i> Robotic Joint Replacements</li>
-                        <li><i class="fa-solid fa-circle-check text-teal-600 mr-2"></i> Sports Medicine & Rehabilitation</li>
-                    </ul>
-                    <a href="#booking-engine" class="mt-6 inline-flex items-center text-xs font-bold text-teal-700 hover:text-teal-800 transition">Book Ortho Consult &rarr;</a>
-                </div>
-
-                <!-- Emergency & Trauma -->
-                <div class="bg-white rounded-3xl p-8 border border-slate-200/90 shadow-sm hover:shadow-xl transition group">
-                    <div class="w-14 h-14 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition">
-                        <i class="fa-solid fa-truck-medical"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-900">24/7 Emergency & Trauma</h3>
-                    <p class="text-xs text-slate-600 mt-3 leading-relaxed">
-                        High-acuity triage center capable of handling polytrauma, stroke, acute myocardial infarction, toxicological emergencies, and burns.
-                    </p>
-                    <ul class="mt-5 space-y-2 text-xs font-semibold text-slate-700">
-                        <li><i class="fa-solid fa-circle-check text-teal-600 mr-2"></i> Dedicated Resuscitation Bays</li>
-                        <li><i class="fa-solid fa-circle-check text-teal-600 mr-2"></i> Advanced ACLS Mobile Ambulances</li>
-                    </ul>
-                    <a href="tel:18004259999" class="mt-6 inline-flex items-center text-xs font-bold text-red-600 hover:text-red-700 transition">Emergency: 1800-425-9999 &rarr;</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- DOCTORS CATALOG WITH REALISTIC PROFILES -->
-    <section id="doctors-catalog" class="py-20 max-w-7xl mx-auto px-6">
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
-            <div>
-                <span class="text-xs font-bold text-teal-700 uppercase tracking-wider">Distinguished Faculty</span>
-                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mt-1">Our Senior Medical Specialists</h2>
-            </div>
-            <p class="text-xs text-slate-500 max-w-md mt-2 md:mt-0">Book directly with our accredited senior consultants. Same-day appointments available for priority cases.</p>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="doctorsCardsContainer">
-            <!-- Populated via JS with realistic images & data -->
-        </div>
-    </section>
-
-    <!-- PREVENTIVE HEALTH CHECKUP PACKAGES -->
-    <section id="health-packages" class="py-20 bg-slate-900 text-white">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center max-w-2xl mx-auto mb-14">
-                <span class="text-xs font-bold text-teal-400 uppercase tracking-wider">Early Detection Saves Lives</span>
-                <h2 class="text-3xl md:text-4xl font-extrabold text-white mt-1">Preventive Health Checkup Packages</h2>
-                <p class="text-slate-400 text-xs mt-2">Comprehensive health screening packages curated by our clinical experts for every age group.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Package 1 -->
-                <div class="p-8 rounded-3xl bg-slate-800 border border-slate-700 flex flex-col justify-between hover:border-teal-500 transition">
-                    <div>
-                        <span class="px-3 py-1 rounded-full bg-teal-500/20 text-teal-300 text-[10px] font-bold uppercase">Basic Wellness</span>
-                        <h3 class="text-xl font-bold text-white mt-3">Essential Health Check</h3>
-                        <div class="mt-4 flex items-baseline space-x-2">
-                            <span class="text-3xl font-extrabold text-white">₹1,499</span>
-                            <span class="text-xs text-slate-400 line-through">₹2,800</span>
-                        </div>
-                        <ul class="mt-6 space-y-3 text-xs text-slate-300">
-                            <li><i class="fa-solid fa-check text-teal-400 mr-2"></i> Complete Blood Picture (CBC) & ESR</li>
-                            <li><i class="fa-solid fa-check text-teal-400 mr-2"></i> Fasting Blood Glucose (FBS) & HbA1c</li>
-                            <li><i class="fa-solid fa-check text-teal-400 mr-2"></i> Complete Lipid Profile (Cholesterol)</li>
-                            <li><i class="fa-solid fa-check text-teal-400 mr-2"></i> Kidney Function Test (Serum Creatinine, Urea)</li>
-                            <li><i class="fa-solid fa-check text-teal-400 mr-2"></i> Physician Consultation & Lifestyle Report</li>
-                        </ul>
-                    </div>
-                    <button onclick="bookHealthPackage('Essential Health Check (₹1,499)')" class="mt-8 w-full py-3 rounded-xl bg-teal-600 hover:bg-teal-500 text-slate-950 font-bold text-xs transition">Book This Package</button>
-                </div>
-
-                <!-- Package 2 (Popular) -->
-                <div class="p-8 rounded-3xl bg-gradient-to-b from-teal-950/80 to-slate-800 border-2 border-teal-500 relative flex flex-col justify-between shadow-2xl">
-                    <span class="absolute -top-3 right-6 px-3 py-1 rounded-full bg-teal-500 text-slate-950 text-[10px] font-extrabold uppercase tracking-wider">Most Recommended</span>
-                    <div>
-                        <span class="px-3 py-1 rounded-full bg-teal-500/20 text-teal-300 text-[10px] font-bold uppercase">Comprehensive</span>
-                        <h3 class="text-xl font-bold text-white mt-3">Master Cardiac & Body Check</h3>
-                        <div class="mt-4 flex items-baseline space-x-2">
-                            <span class="text-3xl font-extrabold text-teal-400">₹3,499</span>
-                            <span class="text-xs text-slate-400 line-through">₹6,500</span>
-                        </div>
-                        <ul class="mt-6 space-y-3 text-xs text-slate-200">
-                            <li><i class="fa-solid fa-check text-teal-400 mr-2"></i> All 38 Tests in Essential Wellness</li>
-                            <li><i class="fa-solid fa-check text-teal-400 mr-2"></i> 2D Echocardiography & 12-Lead ECG</li>
-                            <li><i class="fa-solid fa-check text-teal-400 mr-2"></i> Liver Function Profile (SGOT, SGPT, Bilirubin)</li>
-                            <li><i class="fa-solid fa-check text-teal-400 mr-2"></i> Thyroid Stimulating Hormone (TSH)</li>
-                            <li><i class="fa-solid fa-check text-teal-400 mr-2"></i> Ultrasound Abdomen & Pelvis</li>
-                            <li><i class="fa-solid fa-check text-teal-400 mr-2"></i> Senior Cardiologist In-Person Consultation</li>
-                        </ul>
-                    </div>
-                    <button onclick="bookHealthPackage('Master Cardiac Check (₹3,499)')" class="mt-8 w-full py-3 rounded-xl bg-teal-400 hover:bg-teal-300 text-slate-950 font-bold text-xs transition">Book Master Package</button>
-                </div>
-
-                <!-- Package 3 -->
-                <div class="p-8 rounded-3xl bg-slate-800 border border-slate-700 flex flex-col justify-between hover:border-teal-500 transition">
-                    <div>
-                        <span class="px-3 py-1 rounded-full bg-teal-500/20 text-teal-300 text-[10px] font-bold uppercase">Senior Care</span>
-                        <h3 class="text-xl font-bold text-white mt-3">Senior Citizen Care Package</h3>
-                        <div class="mt-4 flex items-baseline space-x-2">
-                            <span class="text-3xl font-extrabold text-white">₹4,299</span>
-                            <span class="text-xs text-slate-400 line-through">₹7,800</span>
-                        </div>
-                        <ul class="mt-6 space-y-3 text-xs text-slate-300">
-                            <li><i class="fa-solid fa-check text-teal-400 mr-2"></i> Comprehensive Bone Mineral Density (Dexa)</li>
-                            <li><i class="fa-solid fa-check text-teal-400 mr-2"></i> Vitamin D3 & Vitamin B12 Levels</li>
-                            <li><i class="fa-solid fa-check text-teal-400 mr-2"></i> Complete Renal & Diabetic Screening</li>
-                            <li><i class="fa-solid fa-check text-teal-400 mr-2"></i> Orthopedic & Eye Screening</li>
-                            <li><i class="fa-solid fa-check text-teal-400 mr-2"></i> Dietitian & Geriatric Consult</li>
-                        </ul>
-                    </div>
-                    <button onclick="bookHealthPackage('Senior Citizen Care (₹4,299)')" class="mt-8 w-full py-3 rounded-xl bg-teal-600 hover:bg-teal-500 text-slate-950 font-bold text-xs transition">Book Senior Care</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- DIGITAL PATIENT PORTAL & LAB REPORTS -->
-    <section id="lab-portal" class="py-20 max-w-7xl mx-auto px-6">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            
-            <div class="lg:col-span-6">
-                <span class="text-xs font-bold text-teal-700 uppercase tracking-wider">Patient Self-Service</span>
-                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mt-1">Access Lab Reports & Diagnostics Online</h2>
-                <p class="text-slate-600 text-sm mt-3 leading-relaxed">
-                    No need to visit the hospital to collect physical paper reports. Enter your registered mobile number to securely view and download NABL-certified lab reports and radiology summaries.
-                </p>
-
-                <div class="mt-8 bg-slate-50 p-6 rounded-3xl border border-slate-200">
-                    <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider mb-3">Download Diagnostic Report</h4>
-                    <div class="flex flex-col sm:flex-row gap-3">
-                        <input type="tel" id="repMobile" placeholder="Registered Mobile (e.g. 9876543210)" class="flex-1 bg-white border border-slate-300 rounded-xl px-4 py-3 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-600">
-                        <button onclick="fetchLabReports()" class="px-6 py-3 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs transition flex items-center justify-center space-x-2">
-                            <i class="fa-solid fa-download"></i>
-                            <span>View Reports</span>
+                    <div class="mt-8 flex flex-wrap gap-3">
+                        <button onclick="loginAs('patient')" class="px-6 py-3.5 rounded-xl bg-white text-teal-900 font-extrabold text-xs shadow-lg hover:bg-teal-50 transition flex items-center space-x-2">
+                            <i class="fa-solid fa-hospital-user text-teal-700"></i>
+                            <span>Enter Patient Portal</span>
                         </button>
-                    </div>
-
-                    <!-- Report Result Display -->
-                    <div id="repResultBox" class="mt-4 p-4 rounded-2xl bg-white border border-slate-200 hidden text-xs">
-                        <div class="flex items-center justify-between pb-2 border-b border-slate-100">
-                            <div>
-                                <div class="font-bold text-slate-900" id="repPatientName">Aarav Sharma (MRN #90214)</div>
-                                <div class="text-[11px] text-slate-500">Collected: Today, 08:30 AM • Certified by Pathologist</div>
-                            </div>
-                            <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-bold">READY</span>
-                        </div>
-                        <div class="mt-3 flex items-center justify-between">
-                            <span class="text-slate-700 font-medium">Complete Blood Count (CBC) & Lipid Panel</span>
-                            <button onclick="downloadReportPDF()" class="text-teal-700 font-bold hover:underline flex items-center space-x-1">
-                                <i class="fa-solid fa-file-pdf text-red-500"></i>
-                                <span>Download PDF</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Online Consultation Billing Settlement -->
-            <div id="billing" class="lg:col-span-6 bg-slate-900 rounded-3xl p-8 md:p-10 text-white shadow-xl">
-                <span class="text-xs font-bold text-teal-400 uppercase tracking-wider">Fast Settlement</span>
-                <h3 class="text-2xl font-extrabold text-white mt-1">Instant Hospital Bill Settlement</h3>
-                <p class="text-slate-400 text-xs mt-2">Enter your consultation token to view and pay outstanding dues directly.</p>
-
-                <div class="mt-6 space-y-4 text-xs">
-                    <div>
-                        <label class="block text-slate-400 mb-1">Enter Appointment ID / Token *</label>
-                        <input type="text" id="billSearchId" placeholder="e.g. 1 or #MDT-1042" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-teal-400">
-                    </div>
-                    <button onclick="searchInvoice()" class="w-full py-3 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold text-xs transition">Search Invoice Dues</button>
-
-                    <!-- Invoice Detail Card -->
-                    <div id="invCard" class="mt-6 p-5 rounded-2xl bg-slate-800/80 border border-slate-700 hidden">
-                        <div class="flex justify-between items-center text-xs pb-3 border-b border-slate-700">
-                            <span class="text-slate-400">Consultation Invoice:</span>
-                            <span class="font-mono font-bold text-teal-300" id="invTokenId">#INV-8821</span>
-                        </div>
-                        <div class="mt-3 space-y-2 text-xs">
-                            <div class="flex justify-between"><span class="text-slate-400">Patient Name:</span><span class="font-bold text-white" id="invPatient">Ananya Sharma</span></div>
-                            <div class="flex justify-between"><span class="text-slate-400">Doctor Consulted:</span><span class="font-bold text-white" id="invDoc">Dr. Priya Menon (Dermatology)</span></div>
-                            <div class="flex justify-between"><span class="text-slate-400">Status:</span><span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold text-[10px]" id="invStatus">Payment Pending</span></div>
-                            <div class="flex justify-between pt-2 border-t border-slate-700 text-sm"><span class="font-bold text-white">Amount Due:</span><span class="font-extrabold text-teal-400 text-base" id="invAmount">₹500.00</span></div>
-                        </div>
-
-                        <button onclick="payBillOnlineNow()" id="btnProcessPayment" class="mt-5 w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition flex items-center justify-center space-x-2">
-                            <i class="fa-solid fa-lock"></i>
-                            <span>Pay ₹500.00 Securely</span>
+                        <button onclick="loginAs('doctor')" class="px-6 py-3.5 rounded-xl bg-teal-800/80 hover:bg-teal-700 border border-teal-500/30 text-white font-bold text-xs transition flex items-center space-x-2">
+                            <i class="fa-solid fa-user-doctor text-cyan-300"></i>
+                            <span>Doctor Login</span>
+                        </button>
+                        <button onclick="loginAs('admin')" class="px-6 py-3.5 rounded-xl bg-slate-900/90 hover:bg-slate-950 border border-slate-700 text-white font-bold text-xs transition flex items-center space-x-2">
+                            <i class="fa-solid fa-shield-halved text-purple-400"></i>
+                            <span>Admin Console</span>
                         </button>
                     </div>
                 </div>
             </div>
 
-        </div>
-    </section>
-
-    <!-- TESTIMONIALS & TRUST PROOF -->
-    <section class="py-20 bg-slate-50 border-t border-slate-200">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center max-w-xl mx-auto mb-14">
-                <span class="text-xs font-bold text-teal-700 uppercase tracking-wider">Patient Trust</span>
-                <h2 class="text-3xl font-extrabold text-slate-900 mt-1">Healing Stories from Our Patients</h2>
-            </div>
-
+            <!-- 3 Role Portals Feature Cards -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
-                    <div class="flex text-amber-400 text-xs mb-3">
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                    </div>
-                    <p class="text-xs text-slate-600 leading-relaxed italic">
-                        "Dr. Ramesh Rao and the cardiology team handled my father's emergency angioplasty with unmatched speed. The digital token system eliminated all waiting hassles."
-                    </p>
-                    <div class="mt-4 pt-4 border-t border-slate-100 flex items-center space-x-3">
-                        <div class="w-9 h-9 rounded-full bg-teal-100 text-teal-800 flex items-center justify-center font-bold text-xs">SK</div>
-                        <div>
-                            <h5 class="font-bold text-slate-900 text-xs">Suresh Kulkarni</h5>
-                            <span class="text-[10px] text-slate-400">Cardiology Patient • Hyderabad</span>
+                <!-- Patient Card -->
+                <div class="p-8 rounded-3xl bg-white border border-slate-200 shadow-sm hover:shadow-xl transition flex flex-col justify-between group">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-teal-50 text-teal-700 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-hospital-user"></i>
                         </div>
+                        <h3 class="text-xl font-bold text-slate-900">Patient Portal</h3>
+                        <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                            Search doctors, view available slots & consultation fees, track live room/bed availability, and review your assigned doctor, admitted room, and prescribed medicines.
+                        </p>
+                        <ul class="mt-4 space-y-2 text-xs font-medium text-slate-600">
+                            <li><i class="fa-solid fa-circle-check text-teal-600 mr-2"></i> Real-time Room & Bed Status</li>
+                            <li><i class="fa-solid fa-circle-check text-teal-600 mr-2"></i> Book Online Consultation Slots</li>
+                            <li><i class="fa-solid fa-circle-check text-teal-600 mr-2"></i> View Admission & Medicine Summary</li>
+                        </ul>
                     </div>
+                    <button onclick="loginAs('patient')" class="mt-8 w-full py-3 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs transition flex items-center justify-center space-x-1.5">
+                        <span>Launch Patient Portal</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
                 </div>
 
-                <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
-                    <div class="flex text-amber-400 text-xs mb-3">
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                    </div>
-                    <p class="text-xs text-slate-600 leading-relaxed italic">
-                        "Consulted Dr. Priya Menon for chronic eczema. Her medical diagnosis and follow-up plan were outstanding. Being able to download lab reports directly from the website saved so much time."
-                    </p>
-                    <div class="mt-4 pt-4 border-t border-slate-100 flex items-center space-x-3">
-                        <div class="w-9 h-9 rounded-full bg-purple-100 text-purple-800 flex items-center justify-center font-bold text-xs">MR</div>
-                        <div>
-                            <h5 class="font-bold text-slate-900 text-xs">Meghana Reddy</h5>
-                            <span class="text-[10px] text-slate-400">Dermatology Patient • Bengaluru</span>
+                <!-- Doctor Card -->
+                <div class="p-8 rounded-3xl bg-white border border-slate-200 shadow-sm hover:shadow-xl transition flex flex-col justify-between group">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-700 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-user-doctor"></i>
                         </div>
+                        <h3 class="text-xl font-bold text-slate-900">Doctor Workstation</h3>
+                        <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                            Personalized portal for consulting physicians. See all patients registered under your department, view pending appointment queues, and update prescriptions.
+                        </p>
+                        <ul class="mt-4 space-y-2 text-xs font-medium text-slate-600">
+                            <li><i class="fa-solid fa-circle-check text-blue-600 mr-2"></i> Today's Patient Queue to Check</li>
+                            <li><i class="fa-solid fa-circle-check text-blue-600 mr-2"></i> Patients Registered Under You</li>
+                            <li><i class="fa-solid fa-circle-check text-blue-600 mr-2"></i> Assign Medicines & Clinical Notes</li>
+                        </ul>
                     </div>
+                    <button onclick="loginAs('doctor')" class="mt-8 w-full py-3 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs transition flex items-center justify-center space-x-1.5">
+                        <span>Launch Doctor Portal</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
                 </div>
 
-                <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
-                    <div class="flex text-amber-400 text-xs mb-3">
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                    </div>
-                    <p class="text-xs text-slate-600 leading-relaxed italic">
-                        "The pediatric staff under Dr. Sunita Deshmukh is wonderful with children. The clinic is spotless, child-friendly, and appointments run punctually on schedule."
-                    </p>
-                    <div class="mt-4 pt-4 border-t border-slate-100 flex items-center space-x-3">
-                        <div class="w-9 h-9 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-xs">AV</div>
-                        <div>
-                            <h5 class="font-bold text-slate-900 text-xs">Anand Vardhan</h5>
-                            <span class="text-[10px] text-slate-400">Pediatrics Patient Family • Hyderabad</span>
+                <!-- Admin Card -->
+                <div class="p-8 rounded-3xl bg-white border border-slate-200 shadow-sm hover:shadow-xl transition flex flex-col justify-between group">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-purple-50 text-purple-700 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-shield-halved"></i>
                         </div>
+                        <h3 class="text-xl font-bold text-slate-900">Hospital Administration</h3>
+                        <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                            Complete central hospital oversight. Manage inpatient admissions, assigned doctors, allocated rooms, discharge status, medicines used, and total bills.
+                        </p>
+                        <ul class="mt-4 space-y-2 text-xs font-medium text-slate-600">
+                            <li><i class="fa-solid fa-circle-check text-purple-600 mr-2"></i> Inpatient (IPD) Registry & Details</li>
+                            <li><i class="fa-solid fa-circle-check text-purple-600 mr-2"></i> Admit / Discharge Management</li>
+                            <li><i class="fa-solid fa-circle-check text-purple-600 mr-2"></i> Total Revenue & Bed Allocation</li>
+                        </ul>
                     </div>
+                    <button onclick="loginAs('admin')" class="mt-8 w-full py-3 rounded-xl bg-purple-700 hover:bg-purple-800 text-white font-bold text-xs transition flex items-center justify-center space-x-1.5">
+                        <span>Launch Admin Portal</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
                 </div>
             </div>
         </div>
-    </section>
+
+        <!-- ================================================================= -->
+        <!-- VIEW 2: PATIENT PORTAL                                            -->
+        <!-- ================================================================= -->
+        <div id="view-patient" class="space-y-8 hidden">
+            <!-- Patient Header Banner -->
+            <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div class="flex items-center space-x-4">
+                    <div class="w-16 h-16 rounded-2xl bg-teal-100 text-teal-800 flex items-center justify-center text-2xl font-bold">
+                        <i class="fa-solid fa-user-injured"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <h2 class="text-2xl font-extrabold text-slate-900" id="ptDashboardName">Aarav Sharma</h2>
+                            <span class="px-2.5 py-0.5 rounded-full bg-teal-100 text-teal-800 text-xs font-bold font-mono">PID: #101</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">Age: 29 • Male • Mobile: +91 9876543210 • Blood Group: O+</p>
+                    </div>
+                </div>
+                <div class="flex space-x-3">
+                    <button onclick="document.getElementById('patientBookingSection').scrollIntoView({behavior:'smooth'})" class="px-4 py-2.5 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs transition flex items-center space-x-2">
+                        <i class="fa-solid fa-calendar-plus"></i>
+                        <span>New Appointment</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- MY ADMISSION & TREATMENT DETAILS (PATIENT SPECIFIC) -->
+            <div class="bg-gradient-to-r from-teal-900 to-slate-900 rounded-3xl p-6 md:p-8 text-white shadow-xl">
+                <div class="flex items-center justify-between pb-4 border-b border-teal-700/60 mb-6">
+                    <div>
+                        <span class="text-xs uppercase font-mono font-bold text-teal-300">My Clinical Admission Record</span>
+                        <h3 class="text-xl font-bold text-white mt-1">Inpatient Treatment & Stay Status</h3>
+                    </div>
+                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-bold flex items-center">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 mr-1.5 animate-pulse"></span>
+                        Currently Admitted
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-xs">
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/10">
+                        <span class="text-teal-300 font-semibold block mb-1"><i class="fa-solid fa-user-doctor mr-1"></i> Doctor Assigned</span>
+                        <div class="font-extrabold text-white text-sm" id="ptAssignedDoc">Dr. Ramesh Rao</div>
+                        <span class="text-slate-400 text-[11px]">Cardiology Specialist</span>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/10">
+                        <span class="text-teal-300 font-semibold block mb-1"><i class="fa-solid fa-bed mr-1"></i> Room & Ward</span>
+                        <div class="font-extrabold text-white text-sm" id="ptRoomNo">Deluxe Room 304</div>
+                        <span class="text-slate-400 text-[11px]">Block B, 3rd Floor</span>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/10">
+                        <span class="text-teal-300 font-semibold block mb-1"><i class="fa-solid fa-calendar-day mr-1"></i> Admitted On</span>
+                        <div class="font-extrabold text-white text-sm" id="ptAdmittedOn">2026-10-22</div>
+                        <span class="text-slate-400 text-[11px]">Under Active Observation</span>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/10">
+                        <span class="text-teal-300 font-semibold block mb-1"><i class="fa-solid fa-calendar-check mr-1"></i> Discharged On</span>
+                        <div class="font-extrabold text-amber-300 text-sm" id="ptDischargedOn">Expected: 2026-10-26</div>
+                        <span class="text-slate-400 text-[11px]">Pending Clinical Clearance</span>
+                    </div>
+                </div>
+
+                <!-- Medicines Used Section -->
+                <div class="mt-6 p-4 rounded-2xl bg-white/5 border border-white/10 text-xs">
+                    <span class="text-teal-300 font-bold block mb-2"><i class="fa-solid fa-pills mr-1.5 text-teal-400"></i> Prescribed Medicines & Dosages:</span>
+                    <div class="flex flex-wrap gap-2" id="ptMedicinesList">
+                        <span class="px-3 py-1 rounded-lg bg-teal-800/80 border border-teal-600/50 text-white font-mono text-[11px]">Atorvastatin 20mg (1-0-0)</span>
+                        <span class="px-3 py-1 rounded-lg bg-teal-800/80 border border-teal-600/50 text-white font-mono text-[11px]">Aspirin 75mg (0-1-0)</span>
+                        <span class="px-3 py-1 rounded-lg bg-teal-800/80 border border-teal-600/50 text-white font-mono text-[11px]">Metoprolol 50mg (1-0-1)</span>
+                        <span class="px-3 py-1 rounded-lg bg-teal-800/80 border border-teal-600/50 text-white font-mono text-[11px]">Pantoprazole 40mg (Fasting)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LIVE ROOMS & BEDS AVAILABILITY FOR PATIENTS -->
+            <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-slate-200 mb-6 gap-2">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900">Live Hospital Room & Bed Availability</h3>
+                        <p class="text-xs text-slate-500">Real-time room status across inpatient wards and intensive care units.</p>
+                    </div>
+                    <span class="text-xs font-mono font-semibold text-teal-700 bg-teal-50 px-3 py-1 rounded-full border border-teal-200">
+                        <i class="fa-solid fa-circle text-[8px] mr-1 text-emerald-500"></i> Auto-Syncing with Ward Master
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="roomsDisplayGrid">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+
+            <!-- DOCTORS AVAILABLE & APPOINTMENT BOOKING -->
+            <div id="patientBookingSection" class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-slate-200 mb-6 gap-2">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900">Doctors Available & Next Open Slots</h3>
+                        <p class="text-xs text-slate-500">Select any doctor to book a consultation slot instantly.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="patientDoctorsGrid">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- VIEW 3: DOCTOR WORKSTATION PORTAL                                -->
+        <!-- ================================================================= -->
+        <div id="view-doctor" class="space-y-8 hidden">
+            <!-- Doctor Header -->
+            <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div class="flex items-center space-x-4">
+                    <img id="docProfileImg" src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=200&q=80" alt="Doctor" class="w-16 h-16 rounded-2xl object-cover border-2 border-teal-600">
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <h2 class="text-2xl font-extrabold text-slate-900" id="docDisplayName">Dr. Ramesh Rao</h2>
+                            <span class="px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 text-xs font-bold font-mono">Doctor ID: #DOC-1</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1" id="docDisplaySpec">Head of Department • Cardiology • OPD Room: 204 (Block B)</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2 text-xs font-medium">
+                    <span class="text-slate-500">Switch Doctor View:</span>
+                    <select id="docSelectorDropdown" onchange="switchDoctorAccount(this.value)" class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-600">
+                        <option value="1">Dr. Ramesh Rao (Cardio)</option>
+                        <option value="2">Dr. Priya Menon (Derma)</option>
+                        <option value="3">Dr. Vikram Singh (Gen Med)</option>
+                        <option value="4">Dr. Sunita Deshmukh (Pediatrics)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Doctor Quick Stats -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <div class="p-6 rounded-2xl bg-white border border-slate-200">
+                    <span class="text-xs font-bold text-slate-500 uppercase">Today's Waiting Queue</span>
+                    <div class="text-3xl font-extrabold text-blue-600 font-mono mt-2" id="docQueueCount">2 Patients</div>
+                    <span class="text-[11px] text-slate-400 mt-1 block">Scheduled for consultation today</span>
+                </div>
+                <div class="p-6 rounded-2xl bg-white border border-slate-200">
+                    <span class="text-xs font-bold text-slate-500 uppercase">Admitted Under My Care</span>
+                    <div class="text-3xl font-extrabold text-teal-600 font-mono mt-2" id="docAdmittedCount">2 Inpatients</div>
+                    <span class="text-[11px] text-slate-400 mt-1 block">Active bed allocations</span>
+                </div>
+                <div class="p-6 rounded-2xl bg-white border border-slate-200">
+                    <span class="text-xs font-bold text-slate-500 uppercase">Consultations Completed</span>
+                    <div class="text-3xl font-extrabold text-emerald-600 font-mono mt-2">14 Patients</div>
+                    <span class="text-[11px] text-slate-400 mt-1 block">This week</span>
+                </div>
+            </div>
+
+            <!-- SECTION: PATIENTS HE NEEDS TO CHECK TODAY (QUEUE) -->
+            <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm">
+                <div class="flex items-center justify-between pb-4 border-b border-slate-200 mb-6">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900">Today's Consultation Queue (To Check)</h3>
+                        <p class="text-xs text-slate-500">Patients waiting in your OPD clinic queue for medical evaluation.</p>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto rounded-xl border border-slate-200">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-50 text-slate-600 uppercase font-bold text-[11px] border-b border-slate-200">
+                            <tr>
+                                <th class="p-4">Queue #</th>
+                                <th class="p-4">Patient Name</th>
+                                <th class="p-4">Age / Gender</th>
+                                <th class="p-4">Contact</th>
+                                <th class="p-4">Slot</th>
+                                <th class="p-4 text-center">Status</th>
+                                <th class="p-4 text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="docQueueTableBody" class="divide-y divide-slate-100 font-medium">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SECTION: ALL PATIENTS REGISTERED UNDER THIS DOCTOR -->
+            <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm">
+                <div class="flex items-center justify-between pb-4 border-b border-slate-200 mb-6">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900">All Patients Registered Under My Care</h3>
+                        <p class="text-xs text-slate-500">Complete inpatient and outpatient clinical records under your supervision.</p>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto rounded-xl border border-slate-200">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-50 text-slate-600 uppercase font-bold text-[11px] border-b border-slate-200">
+                            <tr>
+                                <th class="p-4">MRN / ID</th>
+                                <th class="p-4">Patient Name</th>
+                                <th class="p-4">Room No.</th>
+                                <th class="p-4">Admitted On</th>
+                                <th class="p-4">Prescribed Medicines</th>
+                                <th class="p-4 text-center">Status</th>
+                                <th class="p-4 text-center">Update Clinical Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="docRegisteredTableBody" class="divide-y divide-slate-100 font-medium">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- VIEW 4: ADMIN MANAGEMENT CONSOLE                                  -->
+        <!-- ================================================================= -->
+        <div id="view-admin" class="space-y-8 hidden">
+            <!-- Admin Top Stats -->
+            <div class="bg-slate-900 p-8 rounded-3xl text-white shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                <div>
+                    <span class="px-2.5 py-1 rounded-full bg-purple-500/20 text-purple-300 text-xs font-bold border border-purple-500/40 font-mono">
+                        <i class="fa-solid fa-crown mr-1"></i> Hospital Central Command
+                    </span>
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-white mt-2">Hospital Administration & IPD Manager</h2>
+                    <p class="text-slate-400 text-xs mt-1">Manage inpatient admissions, room allocations, discharge records, and hospital billing.</p>
+                </div>
+                <div class="flex space-x-3">
+                    <button onclick="openModal('admitPatientModal')" class="px-5 py-3 rounded-xl bg-teal-600 hover:bg-teal-500 text-slate-950 font-bold text-xs transition flex items-center space-x-2">
+                        <i class="fa-solid fa-bed"></i>
+                        <span>Admit New Patient</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Admin Key KPI Metric Counters -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="p-6 rounded-2xl bg-white border border-slate-200">
+                    <span class="text-xs text-slate-500 font-bold uppercase">Total Inpatients</span>
+                    <div class="text-3xl font-extrabold text-slate-900 font-mono mt-1" id="admTotalPatients">4 Patients</div>
+                    <span class="text-[11px] text-teal-600 font-semibold mt-1 block">Active Inpatient Beds</span>
+                </div>
+                <div class="p-6 rounded-2xl bg-white border border-slate-200">
+                    <span class="text-xs text-slate-500 font-bold uppercase">Available Rooms</span>
+                    <div class="text-3xl font-extrabold text-emerald-600 font-mono mt-1" id="admAvailableRooms">14 Rooms</div>
+                    <span class="text-[11px] text-slate-400 mt-1 block">Ready for admission</span>
+                </div>
+                <div class="p-6 rounded-2xl bg-white border border-slate-200">
+                    <span class="text-xs text-slate-500 font-bold uppercase">Active Doctors</span>
+                    <div class="text-3xl font-extrabold text-blue-600 font-mono mt-1">4 Specialists</div>
+                    <span class="text-[11px] text-slate-400 mt-1 block">On-duty today</span>
+                </div>
+                <div class="p-6 rounded-2xl bg-white border border-slate-200">
+                    <span class="text-xs text-slate-500 font-bold uppercase">Total Revenue (SUM)</span>
+                    <div class="text-3xl font-extrabold text-purple-600 font-mono mt-1" id="admTotalRevenue">₹54,200</div>
+                    <span class="text-[11px] text-slate-400 mt-1 block">From consultations & IPD</span>
+                </div>
+            </div>
+
+            <!-- INPATIENT (IPD) DETAILED REGISTRY TABLE (USER REQUESTED CORE SECTION) -->
+            <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-slate-200 mb-6 gap-3">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900">Inpatient Clinical Registry & Stay Details</h3>
+                        <p class="text-xs text-slate-500">Complete record of Doctor assigned, Room No, Admitted On, Discharged On, and Medicines used.</p>
+                    </div>
+                    <div class="w-full sm:w-64">
+                        <input type="text" id="adminSearchInput" oninput="filterAdminInpatients()" placeholder="Search patient or room..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-purple-600">
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto rounded-xl border border-slate-200">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-50 text-slate-600 uppercase font-bold text-[11px] border-b border-slate-200">
+                            <tr>
+                                <th class="p-4">PID</th>
+                                <th class="p-4">Patient Name</th>
+                                <th class="p-4">Doctor Assigned</th>
+                                <th class="p-4">Room No.</th>
+                                <th class="p-4">Admitted On</th>
+                                <th class="p-4">Discharged On</th>
+                                <th class="p-4">Medicines Used</th>
+                                <th class="p-4 text-center">Status</th>
+                                <th class="p-4 text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminInpatientTableBody" class="divide-y divide-slate-100 font-medium">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
 
     <!-- FOOTER -->
-    <footer class="bg-slate-950 text-slate-400 text-xs py-16 border-t border-slate-800">
-        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-10">
+    <footer class="bg-slate-950 text-slate-400 text-xs py-12 border-t border-slate-800 mt-12">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
-                <div class="flex items-center space-x-3 text-white font-extrabold text-lg">
-                    <div class="w-8 h-8 rounded-lg bg-teal-600 flex items-center justify-center text-white text-base">
-                        <i class="fa-solid fa-hospital"></i>
-                    </div>
-                    <span>MediTrack Health</span>
-                </div>
-                <p class="text-slate-500 mt-4 leading-relaxed">
-                    A premier super-specialty hospital committed to world-class clinical excellence, compassionate healing, and advanced medical diagnostics.
-                </p>
-                <div class="mt-4 flex space-x-3 text-slate-400">
-                    <a href="#" class="w-8 h-8 rounded-full bg-slate-900 hover:bg-teal-600 hover:text-white flex items-center justify-center transition"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#" class="w-8 h-8 rounded-full bg-slate-900 hover:bg-teal-600 hover:text-white flex items-center justify-center transition"><i class="fa-brands fa-twitter"></i></a>
-                    <a href="#" class="w-8 h-8 rounded-full bg-slate-900 hover:bg-teal-600 hover:text-white flex items-center justify-center transition"><i class="fa-brands fa-linkedin-in"></i></a>
-                    <a href="#" class="w-8 h-8 rounded-full bg-slate-900 hover:bg-teal-600 hover:text-white flex items-center justify-center transition"><i class="fa-brands fa-instagram"></i></a>
-                </div>
+                <p class="font-bold text-slate-200 text-sm">MediTrack Health System</p>
+                <p class="text-slate-500 mt-0.5">Multi-Role Healthcare Management Portal • Patient, Doctor & Administration Access</p>
             </div>
-
-            <div>
-                <h4 class="font-bold text-white uppercase tracking-wider text-[11px] mb-4">Clinical Specialties</h4>
-                <ul class="space-y-2.5">
-                    <li><a href="#specialties" class="hover:text-teal-400 transition">Cardiology & Heart Institute</a></li>
-                    <li><a href="#specialties" class="hover:text-teal-400 transition">Dermatology & Allergy Care</a></li>
-                    <li><a href="#specialties" class="hover:text-teal-400 transition">Pediatrics & Neonatal Care</a></li>
-                    <li><a href="#specialties" class="hover:text-teal-400 transition">General Medicine & Diabetology</a></li>
-                    <li><a href="#specialties" class="hover:text-teal-400 transition">Orthopedics & Joint Replacement</a></li>
-                    <li><a href="#specialties" class="hover:text-teal-400 transition">24/7 Trauma & Emergency</a></li>
-                </ul>
-            </div>
-
-            <div>
-                <h4 class="font-bold text-white uppercase tracking-wider text-[11px] mb-4">Patient Services</h4>
-                <ul class="space-y-2.5">
-                    <li><a href="#booking-engine" class="hover:text-teal-400 transition">Book Doctor Appointment</a></li>
-                    <li><a href="#lab-portal" class="hover:text-teal-400 transition">Download Lab Test Reports</a></li>
-                    <li><a href="#health-packages" class="hover:text-teal-400 transition">Health Checkup Packages</a></li>
-                    <li><a href="#billing" class="hover:text-teal-400 transition">Online Bill Payment</a></li>
-                    <li><a href="#" class="hover:text-teal-400 transition">Hospital Admission Guide</a></li>
-                    <li><a href="#" class="hover:text-teal-400 transition">Visitor Policy & Visiting Hours</a></li>
-                </ul>
-            </div>
-
-            <div>
-                <h4 class="font-bold text-white uppercase tracking-wider text-[11px] mb-4">Hospital Campus & Contact</h4>
-                <p class="text-slate-300 font-semibold">MediTrack Main Campus</p>
-                <p class="text-slate-400 mt-1">Road No. 12, Medical Enclave, Banjara Hills, Hyderabad, Telangana 500034</p>
-                <div class="mt-4 pt-4 border-t border-slate-900 space-y-1">
-                    <p class="text-red-400 font-bold"><i class="fa-solid fa-phone-volume mr-1.5"></i> Emergency: 1800-425-9999</p>
-                    <p class="text-slate-300"><i class="fa-solid fa-envelope mr-1.5 text-teal-400"></i> contact@meditrackhealth.org</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="max-w-7xl mx-auto px-6 mt-12 pt-6 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between text-slate-600 text-[11px]">
-            <div>&copy; 2026 MediTrack Health System. All rights reserved. JCI & NABH Accredited.</div>
-            <div class="flex space-x-6 mt-3 sm:mt-0">
-                <a href="#" class="hover:text-slate-400">Privacy Policy</a>
-                <a href="#" class="hover:text-slate-400">Patient Rights & Responsibilities</a>
-                <a href="#" class="hover:text-slate-400">Terms of Care</a>
+            <div class="text-slate-500 text-right">
+                <span class="inline-block px-3 py-1 rounded bg-slate-900 text-teal-400 border border-slate-800 font-mono text-[11px]">
+                    Core Stack: Java 17 • Java Swing Desktop • JDBC • MySQL 8.0
+                </span>
             </div>
         </div>
     </footer>
 
-    <!-- DIGITAL APPOINTMENT PASS MODAL -->
-    <div id="passModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl text-center relative border border-slate-200">
-            <button onclick="closeModal('passModal')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 text-lg">
+    <!-- ===================================================================== -->
+    <!-- MODALS & DIALOGS                                                      -->
+    <!-- ===================================================================== -->
+
+    <!-- LOGIN MODAL -->
+    <div id="loginModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-8 shadow-2xl relative border border-slate-200">
+            <button onclick="closeModal('loginModal')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 text-lg">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl mx-auto mb-4">
-                <i class="fa-solid fa-circle-check"></i>
-            </div>
-            <h3 class="text-2xl font-extrabold text-slate-900">Appointment Confirmed!</h3>
-            <p class="text-xs text-slate-500 mt-1">Present this digital token at the OPD Reception desk.</p>
-
-            <div class="mt-6 p-5 rounded-2xl bg-slate-50 border border-slate-200 text-left text-xs space-y-2.5">
-                <div class="flex justify-between items-center pb-2 border-b border-slate-200">
-                    <span class="text-slate-500">Token ID:</span>
-                    <span class="font-mono font-extrabold text-teal-700 text-sm" id="mToken">#MDT-9021</span>
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 rounded-2xl bg-teal-50 text-teal-700 flex items-center justify-center text-2xl mx-auto mb-3">
+                    <i class="fa-solid fa-lock"></i>
                 </div>
-                <div class="flex justify-between"><span class="text-slate-500">Patient:</span><span class="font-bold text-slate-800" id="mPatient">Ramesh Varma</span></div>
-                <div class="flex justify-between"><span class="text-slate-500">Consultant:</span><span class="font-bold text-slate-800" id="mDoc">Dr. Ramesh Rao (Cardiology)</span></div>
-                <div class="flex justify-between"><span class="text-slate-500">Scheduled Date:</span><span class="font-bold text-slate-800" id="mDate">2026-10-25</span></div>
-                <div class="flex justify-between"><span class="text-slate-500">Time Slot:</span><span class="font-bold text-slate-800" id="mSlot">09:30 AM</span></div>
-                <div class="flex justify-between"><span class="text-slate-500">Consultation Room:</span><span class="font-bold text-slate-800">OPD Block B, Room 204</span></div>
-                <div class="flex justify-between pt-2 border-t border-slate-200"><span class="text-slate-500 font-bold">Consultation Fee:</span><span class="font-extrabold text-teal-700 text-sm" id="mFee">₹800.00</span></div>
+                <h3 class="text-xl font-bold text-slate-900">Sign In to MediTrack</h3>
+                <p class="text-xs text-slate-500 mt-1">Select your account role to continue</p>
             </div>
 
-            <div class="mt-6 flex space-x-3">
-                <button onclick="window.print()" class="flex-1 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition flex items-center justify-center space-x-1.5">
-                    <i class="fa-solid fa-print"></i>
-                    <span>Print Slip</span>
+            <div class="space-y-3 text-xs font-bold">
+                <button onclick="loginAs('patient')" class="w-full py-3.5 px-4 rounded-xl border border-teal-200 bg-teal-50 hover:bg-teal-100 text-teal-900 flex items-center justify-between transition">
+                    <span class="flex items-center space-x-2.5">
+                        <i class="fa-solid fa-hospital-user text-teal-600 text-base"></i>
+                        <span>Patient Portal Login</span>
+                    </span>
+                    <i class="fa-solid fa-chevron-right text-xs text-teal-600"></i>
                 </button>
-                <button onclick="closeModal('passModal')" class="flex-1 py-3 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs transition">Done</button>
+                <button onclick="loginAs('doctor')" class="w-full py-3.5 px-4 rounded-xl border border-blue-200 bg-blue-50 hover:bg-blue-100 text-blue-900 flex items-center justify-between transition">
+                    <span class="flex items-center space-x-2.5">
+                        <i class="fa-solid fa-user-doctor text-blue-600 text-base"></i>
+                        <span>Doctor Workstation</span>
+                    </span>
+                    <i class="fa-solid fa-chevron-right text-xs text-blue-600"></i>
+                </button>
+                <button onclick="loginAs('admin')" class="w-full py-3.5 px-4 rounded-xl border border-purple-200 bg-purple-50 hover:bg-purple-100 text-purple-900 flex items-center justify-between transition">
+                    <span class="flex items-center space-x-2.5">
+                        <i class="fa-solid fa-shield-halved text-purple-600 text-base"></i>
+                        <span>Admin Console</span>
+                    </span>
+                    <i class="fa-solid fa-chevron-right text-xs text-purple-600"></i>
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- JAVASCRIPT LOGIC -->
+    <!-- MODAL: ADMIT NEW PATIENT (ADMIN) -->
+    <div id="admitPatientModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-8 shadow-2xl relative border border-slate-200">
+            <button onclick="closeModal('admitPatientModal')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="text-xl font-bold text-slate-900 mb-1">Admit New Inpatient (IPD)</h3>
+            <p class="text-xs text-slate-500 mb-6">Assign doctor, allocate room, and record prescribed medicines.</p>
+
+            <form onsubmit="handleAdmitPatient(event)" class="space-y-4 text-xs font-semibold text-slate-700">
+                <div>
+                    <label class="block mb-1">Patient Full Name *</label>
+                    <input type="text" id="admNewName" required placeholder="e.g. Meera Nambiar" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-slate-900">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block mb-1">Assign Doctor *</label>
+                        <select id="admNewDoc" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-slate-900 font-medium">
+                            <option value="Dr. Ramesh Rao">Dr. Ramesh Rao (Cardio)</option>
+                            <option value="Dr. Priya Menon">Dr. Priya Menon (Derma)</option>
+                            <option value="Dr. Vikram Singh">Dr. Vikram Singh (Gen Med)</option>
+                            <option value="Dr. Sunita Deshmukh">Dr. Sunita (Pediatrics)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block mb-1">Room Allocation *</label>
+                        <select id="admNewRoom" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-slate-900 font-medium">
+                            <option value="Deluxe Room 302">Deluxe Room 302 (Available)</option>
+                            <option value="Deluxe Room 305">Deluxe Room 305 (Available)</option>
+                            <option value="ICU Bed 04">ICU Bed 04 (Available)</option>
+                            <option value="General Ward Bed 12">General Ward Bed 12 (Available)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block mb-1">Medicines Prescribed / Used *</label>
+                    <input type="text" id="admNewMeds" required placeholder="e.g. Paracetamol 650mg, Ceftriaxone 1g, Pantocid" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-slate-900">
+                </div>
+
+                <div>
+                    <label class="block mb-1">Admission Date</label>
+                    <input type="date" id="admNewDate" required class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-slate-900">
+                </div>
+
+                <button type="submit" class="w-full py-3.5 rounded-xl bg-purple-700 hover:bg-purple-800 text-white font-bold text-xs transition mt-2">
+                    Confirm Admission & Allocate Bed
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: DOCTOR UPDATE CLINICAL NOTES / MEDICINES -->
+    <div id="doctorConsultModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl relative border border-slate-200">
+            <button onclick="closeModal('doctorConsultModal')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="text-xl font-bold text-slate-900 mb-1">Update Patient Clinical Record</h3>
+            <p class="text-xs text-slate-500 mb-4" id="docModalPatientHeader">Consultation for Patient #101</p>
+
+            <form onsubmit="handleDoctorUpdateRecord(event)" class="space-y-4 text-xs font-semibold text-slate-700">
+                <input type="hidden" id="docModalPatientId">
+                <div>
+                    <label class="block mb-1">Add / Update Prescribed Medicines *</label>
+                    <textarea id="docModalMeds" rows="3" required class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-slate-900 font-mono text-xs"></textarea>
+                </div>
+                <div>
+                    <label class="block mb-1">Doctor's Clinical Action *</label>
+                    <select id="docModalStatus" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-slate-900 font-medium">
+                        <option value="Active">Keep Admitted (Continuing Treatment)</option>
+                        <option value="Discharged">Mark Cleared for Discharge</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full py-3.5 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs transition">
+                    Save Clinical Notes & Update Patient Record
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- JAVASCRIPT STATE & APPLICATION ENGINE                                 -->
+    <!-- ===================================================================== -->
     <script>
-        // High-Quality Realistic Doctors Data
-        const doctorsData = [
+        // Central In-Memory Relational Healthcare State
+        let currentRole = 'public'; // 'public', 'patient', 'doctor', 'admin'
+        let activeDoctorId = 1; // Default: Dr. Ramesh Rao
+
+        // Hospital Rooms Data (Available, Occupied, Cleaned)
+        const roomsData = [
+            { id: 1, name: "Deluxe Suite 301", type: "Private Suite", price: "₹3,500/day", status: "Occupied", patient: "Karthik Reddy" },
+            { id: 2, name: "Deluxe Suite 302", type: "Private Suite", price: "₹3,500/day", status: "Available", patient: "-" },
+            { id: 3, name: "Deluxe Suite 304", type: "Private Suite", price: "₹3,500/day", status: "Occupied", patient: "Aarav Sharma" },
+            { id: 4, name: "ICU Bed 01", type: "Intensive Care Unit", price: "₹6,000/day", status: "Occupied", patient: "Suresh Rao" },
+            { id: 5, name: "ICU Bed 02", type: "Intensive Care Unit", price: "₹6,000/day", status: "Available", patient: "-" },
+            { id: 6, name: "ICU Bed 04", type: "Intensive Care Unit", price: "₹6,000/day", status: "Available", patient: "-" },
+            { id: 7, name: "General Ward Bed 08", type: "Twin Sharing", price: "₹1,200/day", status: "Occupied", patient: "Sneha Patel" },
+            { id: 8, name: "General Ward Bed 12", type: "Twin Sharing", price: "₹1,200/day", status: "Available", patient: "-" }
+        ];
+
+        // Doctors Master Data
+        const doctorsList = [
+            { id: 1, name: "Dr. Ramesh Rao", spec: "Cardiology", fee: 800, slots: ["09:30 AM", "11:00 AM", "03:00 PM"], img: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=300&q=80", dept: "Heart Institute" },
+            { id: 2, name: "Dr. Priya Menon", spec: "Dermatology", fee: 500, slots: ["10:15 AM", "12:00 PM", "04:30 PM"], img: "https://images.unsplash.com/photo-1594824813575-d227f71f6492?auto=format&fit=crop&w=300&q=80", dept: "Skin & Allergy" },
+            { id: 3, name: "Dr. Vikram Singh", spec: "General Medicine", fee: 400, slots: ["09:00 AM", "02:00 PM", "05:00 PM"], img: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=300&q=80", dept: "Internal Medicine" },
+            { id: 4, name: "Dr. Sunita Deshmukh", spec: "Pediatrics", fee: 600, slots: ["11:30 AM", "03:30 PM", "06:00 PM"], img: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=300&q=80", dept: "Child Health" }
+        ];
+
+        // Inpatient Registry (Doctor assigned, Room no, Admitted on, Discharged on, Medicines)
+        let inpatients = [
             {
-                id: 1,
-                name: "Dr. Ramesh Rao",
-                spec: "Cardiology",
-                degrees: "MBBS, MD, DM (Cardiology), FACC",
-                exp: "22+ Yrs Exp",
-                fee: 800.00,
-                rating: "4.9 (420+ Reviews)",
-                img: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=300&q=80",
-                desc: "Specialist in interventional cardiology, coronary angioplasty, and heart failure management."
+                id: 101,
+                name: "Aarav Sharma",
+                age: 29,
+                gender: "Male",
+                phone: "9876543210",
+                doctor: "Dr. Ramesh Rao",
+                doctorId: 1,
+                room: "Deluxe Suite 304",
+                admittedOn: "2026-10-22",
+                dischargedOn: "Active Stay",
+                medicines: "Atorvastatin 20mg, Aspirin 75mg, Metoprolol 50mg",
+                status: "Active",
+                bill: "₹18,500.00"
             },
             {
-                id: 2,
-                name: "Dr. Priya Menon",
-                spec: "Dermatology",
-                degrees: "MBBS, MD (Dermatology), DNB",
-                exp: "16+ Yrs Exp",
-                fee: 500.00,
-                rating: "4.9 (380+ Reviews)",
-                img: "https://images.unsplash.com/photo-1594824813575-d227f71f6492?auto=format&fit=crop&w=300&q=80",
-                desc: "Expert in clinical dermatology, laser therapies, eczema management, and cosmetic procedures."
+                id: 102,
+                name: "Ananya Sharma",
+                age: 28,
+                gender: "Female",
+                phone: "9812345678",
+                doctor: "Dr. Priya Menon",
+                doctorId: 2,
+                room: "Deluxe Suite 301",
+                admittedOn: "2026-10-20",
+                dischargedOn: "2026-10-24",
+                medicines: "Doxycycline 100mg, Desloratadine 5mg, Mupirocin Cream",
+                status: "Discharged",
+                bill: "₹14,200.00"
             },
             {
-                id: 3,
-                name: "Dr. Vikram Singh",
-                spec: "General Medicine",
-                degrees: "MBBS, MD (General Medicine)",
-                exp: "18+ Yrs Exp",
-                fee: 400.00,
-                rating: "4.8 (510+ Reviews)",
-                img: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=300&q=80",
-                desc: "Senior physician specializing in chronic diabetes management, hypertension, and acute illnesses."
+                id: 103,
+                name: "Karthik Reddy",
+                age: 52,
+                gender: "Male",
+                phone: "9123456780",
+                doctor: "Dr. Ramesh Rao",
+                doctorId: 1,
+                room: "ICU Bed 01",
+                admittedOn: "2026-10-23",
+                dischargedOn: "Active Stay",
+                medicines: "Enoxaparin 40mg, Clopidogrel 75mg, Rosuvastatin 40mg",
+                status: "Active",
+                bill: "₹21,500.00"
             },
             {
-                id: 4,
-                name: "Dr. Sunita Deshmukh",
-                spec: "Pediatrics",
-                degrees: "MBBS, MD (Pediatrics), FIAP",
-                exp: "14+ Yrs Exp",
-                fee: 600.00,
-                rating: "5.0 (290+ Reviews)",
-                img: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=300&q=80",
-                desc: "Consultant pediatrician specializing in newborn intensive care, immunizations, and child development."
+                id: 104,
+                name: "Sneha Patel",
+                age: 23,
+                gender: "Female",
+                phone: "9988776655",
+                doctor: "Dr. Vikram Singh",
+                doctorId: 3,
+                room: "General Ward Bed 08",
+                admittedOn: "2026-10-21",
+                dischargedOn: "Active Stay",
+                medicines: "Cefixime 200mg, Paracetamol 650mg, ORS Electrolytes",
+                status: "Active",
+                bill: "₹9,800.00"
             }
         ];
 
-        let selectedSlotText = "09:30 AM";
+        // Today's Doctor OPD Queues
+        let opdQueues = [
+            { id: 1, patient: "Rohit Verma", age: 44, gender: "Male", phone: "9844001122", doctorId: 1, slot: "10:00 AM", status: "Waiting" },
+            { id: 2, patient: "Meenakshi Iyer", age: 38, gender: "Female", phone: "9855112233", doctorId: 1, slot: "11:30 AM", status: "Waiting" },
+            { id: 3, patient: "Aditya Nair", age: 26, gender: "Male", phone: "9866223344", doctorId: 2, slot: "10:15 AM", status: "Waiting" },
+            { id: 4, patient: "Divya Rao", age: 31, gender: "Female", phone: "9877334455", doctorId: 3, slot: "02:00 PM", status: "Waiting" }
+        ];
 
-        // Init
+        // Initialize on load
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('selDate').value = new Date().toISOString().split('T')[0];
-            populateDoctorSelect();
-            renderDoctorsCatalog();
+            document.getElementById('admNewDate').value = new Date().toISOString().split('T')[0];
+            renderRooms();
+            renderPatientDoctors();
+            renderDoctorWorkstation();
+            renderAdminInpatients();
         });
 
-        function populateDoctorSelect() {
-            const sel = document.getElementById('selDoctor');
-            sel.innerHTML = doctorsData.map(d => `
-                <option value="${d.id}" data-spec="${d.spec}" data-fee="${d.fee}" data-img="${d.img}" data-name="${d.name}" data-exp="${d.exp}">
-                    ${d.name} — ${d.spec} (₹${d.fee.toFixed(0)})
-                </option>
-            `).join('');
-            syncSelectedDoctorFee();
-        }
+        // =====================================================================
+        // ROLE SWITCHING ENGINE
+        // =====================================================================
+        function loginAs(role) {
+            currentRole = role;
+            closeModal('loginModal');
 
-        function filterDoctorsBySpecialty() {
-            const spec = document.getElementById('selSpecialty').value;
-            const sel = document.getElementById('selDoctor');
-            const filtered = (spec === "All") ? doctorsData : doctorsData.filter(d => d.spec === spec);
-            sel.innerHTML = filtered.map(d => `
-                <option value="${d.id}" data-spec="${d.spec}" data-fee="${d.fee}" data-img="${d.img}" data-name="${d.name}" data-exp="${d.exp}">
-                    ${d.name} — ${d.spec} (₹${d.fee.toFixed(0)})
-                </option>
-            `).join('');
-            syncSelectedDoctorFee();
-        }
-
-        function syncSelectedDoctorFee() {
-            const sel = document.getElementById('selDoctor');
-            if (sel.options.length === 0) return;
-            const opt = sel.options[sel.selectedIndex];
-            document.getElementById('snapDocName').innerText = opt.getAttribute('data-name');
-            document.getElementById('snapDocSpec').innerText = opt.getAttribute('data-spec') + " • " + opt.getAttribute('data-exp');
-            document.getElementById('snapDocFee').innerText = "₹" + parseFloat(opt.getAttribute('data-fee')).toFixed(2);
-            document.getElementById('snapDocImg').src = opt.getAttribute('data-img');
-        }
-
-        function selectSlot(btn) {
-            document.querySelectorAll('.slot-btn').forEach(b => {
-                b.className = "slot-btn py-2.5 px-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 font-semibold transition";
+            // Hide all views
+            ['public', 'patient', 'doctor', 'admin'].forEach(v => {
+                document.getElementById(`view-${v}`).classList.add('hidden');
             });
-            btn.className = "slot-btn py-2.5 px-3 rounded-xl border border-teal-600 bg-teal-600 text-white font-bold transition";
-            selectedSlotText = btn.innerText;
+
+            // Show selected view
+            document.getElementById(`view-${role}`).classList.remove('hidden');
+
+            // Update Header Role Badge
+            const badge = document.getElementById('activeRoleBadge');
+            const btnLogout = document.getElementById('btnLogout');
+            const btnNavLogin = document.getElementById('btnNavLogin');
+
+            if (role === 'patient') {
+                badge.innerText = "Logged in: Patient (Aarav Sharma)";
+                badge.className = "px-2.5 py-0.5 rounded-full bg-teal-500/20 text-teal-300 font-mono font-semibold border border-teal-500/30";
+            } else if (role === 'doctor') {
+                const doc = doctorsList.find(d => d.id === activeDoctorId);
+                badge.innerText = `Logged in: Doctor (${doc.name})`;
+                badge.className = "px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 font-mono font-semibold border border-blue-500/30";
+            } else if (role === 'admin') {
+                badge.innerText = "Logged in: Hospital Administrator";
+                badge.className = "px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 font-mono font-semibold border border-purple-500/30";
+            }
+
+            btnLogout.classList.remove('hidden');
+            btnNavLogin.classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function renderDoctorsCatalog() {
-            const container = document.getElementById('doctorsCardsContainer');
-            container.innerHTML = doctorsData.map(d => `
-                <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm hover:shadow-xl transition flex flex-col justify-between group">
-                    <div>
-                        <div class="relative rounded-2xl overflow-hidden mb-4">
-                            <img src="${d.img}" alt="${d.name}" class="w-full h-52 object-cover object-top group-hover:scale-105 transition duration-300">
-                            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-bold text-teal-800 shadow">
-                                ${d.exp}
-                            </span>
-                        </div>
-                        <div class="flex items-center space-x-1 text-amber-400 text-xs font-bold mb-1">
-                            <i class="fa-solid fa-star"></i>
-                            <span>${d.rating}</span>
-                        </div>
-                        <h4 class="font-extrabold text-slate-900 text-base">${d.name}</h4>
-                        <p class="text-xs font-semibold text-teal-700 mt-0.5">${d.spec}</p>
-                        <p class="text-[11px] text-slate-400 mt-0.5">${d.degrees}</p>
-                        <p class="text-xs text-slate-500 mt-3 line-clamp-2 leading-relaxed">${d.desc}</p>
-                    </div>
+        function logout() {
+            currentRole = 'public';
+            ['public', 'patient', 'doctor', 'admin'].forEach(v => {
+                document.getElementById(`view-${v}`).classList.add('hidden');
+            });
+            document.getElementById('view-public').classList.remove('hidden');
 
-                    <div class="mt-6 pt-4 border-t border-slate-100">
-                        <div class="flex items-center justify-between mb-3 text-xs">
-                            <span class="text-slate-500">Consultation Fee</span>
-                            <span class="font-extrabold text-slate-900 text-sm">₹${d.fee.toFixed(2)}</span>
-                        </div>
-                        <button onclick="bookWithDoctor(${d.id})" class="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-teal-700 text-white font-bold text-xs transition flex items-center justify-center space-x-1.5">
-                            <i class="fa-solid fa-calendar-plus text-xs"></i>
-                            <span>Book Consultation</span>
-                        </button>
+            const badge = document.getElementById('activeRoleBadge');
+            badge.innerText = "Public Visitor";
+            badge.className = "px-2.5 py-0.5 rounded-full bg-slate-800 border border-slate-700 text-teal-300 font-mono font-semibold";
+
+            document.getElementById('btnLogout').classList.add('hidden');
+            document.getElementById('btnNavLogin').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // =====================================================================
+        // PATIENT PORTAL RENDERING
+        // =====================================================================
+        function renderRooms() {
+            const grid = document.getElementById('roomsDisplayGrid');
+            grid.innerHTML = roomsData.map(r => `
+                <div class="p-4 rounded-2xl border ${r.status === 'Available' ? 'bg-emerald-50/50 border-emerald-200' : 'bg-slate-50 border-slate-200'}">
+                    <div class="flex items-center justify-between text-xs font-bold mb-2">
+                        <span class="text-slate-900">${r.name}</span>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] ${r.status === 'Available' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700'}">
+                            ${r.status}
+                        </span>
+                    </div>
+                    <p class="text-[11px] text-slate-500">${r.type} • ${r.price}</p>
+                    <div class="mt-3 pt-2 border-t border-slate-200/60 text-[11px] flex justify-between items-center">
+                        <span class="text-slate-500">Current Occupant:</span>
+                        <span class="font-semibold text-slate-800">${r.patient}</span>
                     </div>
                 </div>
             `).join('');
         }
 
-        function bookWithDoctor(docId) {
-            document.getElementById('booking-engine').scrollIntoView({ behavior: 'smooth' });
-            const sel = document.getElementById('selDoctor');
-            for (let i = 0; i < sel.options.length; i++) {
-                if (parseInt(sel.options[i].value) === docId) {
-                    sel.selectedIndex = i;
-                    syncSelectedDoctorFee();
-                    break;
-                }
+        function renderPatientDoctors() {
+            const grid = document.getElementById('patientDoctorsGrid');
+            grid.innerHTML = doctorsList.map(d => `
+                <div class="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+                    <div>
+                        <img src="${d.img}" alt="${d.name}" class="w-full h-40 object-cover rounded-xl mb-3">
+                        <h4 class="font-bold text-slate-900 text-sm">${d.name}</h4>
+                        <p class="text-xs text-teal-700 font-semibold">${d.spec}</p>
+                        <p class="text-[11px] text-slate-400 mt-1">${d.dept}</p>
+                        
+                        <div class="mt-3 pt-3 border-t border-slate-100 text-xs flex justify-between">
+                            <span class="text-slate-500">Fee:</span>
+                            <span class="font-bold text-slate-900">₹${d.fee}.00</span>
+                        </div>
+
+                        <div class="mt-3">
+                            <span class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Available Slots:</span>
+                            <div class="flex flex-wrap gap-1.5">
+                                ${d.slots.map(s => `<span class="px-2 py-0.5 rounded bg-slate-100 text-[10px] font-mono font-semibold text-slate-700">${s}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="bookSlotForPatient('${d.name}', '${d.spec}', ${d.fee})" class="mt-4 w-full py-2.5 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs transition">
+                        Select Doctor & Slot
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function bookSlotForPatient(name, spec, fee) {
+            alert(`🗓️ Booking Confirmed!\nDoctor: ${name} (${spec})\nFee: ₹${fee}.00\nSlot: Next available token has been reserved in your Patient Dashboard.`);
+        }
+
+        // =====================================================================
+        // DOCTOR WORKSTATION RENDERING
+        // =====================================================================
+        function switchDoctorAccount(docId) {
+            activeDoctorId = parseInt(docId);
+            renderDoctorWorkstation();
+            loginAs('doctor');
+        }
+
+        function renderDoctorWorkstation() {
+            const doc = doctorsList.find(d => d.id === activeDoctorId);
+            document.getElementById('docDisplayName').innerText = doc.name;
+            document.getElementById('docDisplaySpec').innerText = `Senior Specialist • ${doc.spec} • ${doc.dept}`;
+            document.getElementById('docProfileImg').src = doc.img;
+
+            // Render Queue
+            const docQueue = opdQueues.filter(q => q.doctorId === activeDoctorId);
+            document.getElementById('docQueueCount').innerText = `${docQueue.length} Patient(s)`;
+            const queueTbody = document.getElementById('docQueueTableBody');
+
+            if (docQueue.length === 0) {
+                queueTbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-slate-400">No waiting patients in queue for today.</td></tr>`;
+            } else {
+                queueTbody.innerHTML = docQueue.map((q, idx) => `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-4 font-mono font-bold text-blue-600">Token #${q.id}</td>
+                        <td class="p-4 font-bold text-slate-900">${q.patient}</td>
+                        <td class="p-4 text-slate-500">${q.age} yrs • ${q.gender}</td>
+                        <td class="p-4 font-mono text-slate-600">${q.phone}</td>
+                        <td class="p-4 font-mono text-slate-700">${q.slot}</td>
+                        <td class="p-4 text-center">
+                            <span class="px-2.5 py-0.5 rounded-full ${q.status === 'Waiting' ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'} text-[10px] font-bold">
+                                ${q.status}
+                            </span>
+                        </td>
+                        <td class="p-4 text-center">
+                            <button onclick="markPatientChecked(${q.id})" class="px-3 py-1 rounded-lg bg-teal-600 hover:bg-teal-700 text-white font-bold text-[11px] transition">
+                                <i class="fa-solid fa-check mr-1"></i> Check Patient
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            // Render Patients Registered Under This Doctor
+            const docPatients = inpatients.filter(p => p.doctorId === activeDoctorId || p.doctor === doc.name);
+            document.getElementById('docAdmittedCount').innerText = `${docPatients.length} Inpatient(s)`;
+            const regTbody = document.getElementById('docRegisteredTableBody');
+
+            if (docPatients.length === 0) {
+                regTbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-slate-400">No inpatients currently allocated under your department.</td></tr>`;
+            } else {
+                regTbody.innerHTML = docPatients.map(p => `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-4 font-mono font-bold text-slate-700">#${p.id}</td>
+                        <td class="p-4 font-bold text-slate-900">${p.name} (${p.age}y, ${p.gender})</td>
+                        <td class="p-4 text-teal-800 font-semibold">${p.room}</td>
+                        <td class="p-4 text-slate-600 font-mono">${p.admittedOn}</td>
+                        <td class="p-4 font-mono text-[11px] text-slate-600 max-w-xs truncate">${p.medicines}</td>
+                        <td class="p-4 text-center">
+                            <span class="px-2.5 py-0.5 rounded-full ${p.status === 'Active' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700'} text-[10px] font-bold">
+                                ${p.status}
+                            </span>
+                        </td>
+                        <td class="p-4 text-center">
+                            <button onclick="openDoctorConsultModal(${p.id})" class="px-3 py-1 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white border border-blue-200 font-bold text-[11px] transition">
+                                <i class="fa-solid fa-prescription mr-1"></i> Edit Rx / Status
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
             }
         }
 
-        function handleAppointmentBooking(e) {
+        function markPatientChecked(queueId) {
+            const item = opdQueues.find(q => q.id === queueId);
+            if (item) {
+                item.status = "Checked";
+                renderDoctorWorkstation();
+                alert(`✅ Patient ${item.patient} marked as Evaluated/Checked! Clinical report updated.`);
+            }
+        }
+
+        function openDoctorConsultModal(patientId) {
+            const p = inpatients.find(item => item.id === patientId);
+            if (p) {
+                document.getElementById('docModalPatientId').value = p.id;
+                document.getElementById('docModalPatientHeader').innerText = `Editing Prescription for ${p.name} (Room: ${p.room})`;
+                document.getElementById('docModalMeds').value = p.medicines;
+                document.getElementById('docModalStatus').value = p.status;
+                openModal('doctorConsultModal');
+            }
+        }
+
+        function handleDoctorUpdateRecord(e) {
             e.preventDefault();
-            const pName = document.getElementById('patientName').value;
-            const sel = document.getElementById('selDoctor');
-            const dName = sel.options[sel.selectedIndex].getAttribute('data-name');
-            const dSpec = sel.options[sel.selectedIndex].getAttribute('data-spec');
-            const dFee = sel.options[sel.selectedIndex].getAttribute('data-fee');
-            const date = document.getElementById('selDate').value;
-
-            const token = "#MDT-" + Math.floor(1000 + Math.random() * 9000);
-
-            document.getElementById('mToken').innerText = token;
-            document.getElementById('mPatient').innerText = pName;
-            document.getElementById('mDoc').innerText = dName + " (" + dSpec + ")";
-            document.getElementById('mDate').innerText = date;
-            document.getElementById('mSlot').innerText = selectedSlotText;
-            document.getElementById('mFee').innerText = "₹" + parseFloat(dFee).toFixed(2);
-
-            openModal('passModal');
-            e.target.reset();
-            document.getElementById('selDate').value = new Date().toISOString().split('T')[0];
-        }
-
-        function fetchLabReports() {
-            const mob = document.getElementById('repMobile').value.trim();
-            if (!mob) {
-                alert("Please enter registered mobile number.");
-                return;
-            }
-            document.getElementById('repResultBox').classList.remove('hidden');
-        }
-
-        function downloadReportPDF() {
-            alert("📥 Downloading NABL-Certified Diagnostic Report (PDF) for Complete Blood Picture & Lipid Panel...");
-        }
-
-        function searchInvoice() {
-            const val = document.getElementById('billSearchId').value.trim();
-            if (!val) {
-                alert("Please enter your Appointment ID or Token.");
-                return;
-            }
-            document.getElementById('invCard').classList.remove('hidden');
-        }
-
-        function payBillOnlineNow() {
-            const btn = document.getElementById('btnProcessPayment');
-            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Processing Secure Payment...`;
-            setTimeout(() => {
-                btn.className = "mt-5 w-full py-3 rounded-xl bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center justify-center space-x-1.5 cursor-default";
-                btn.innerHTML = `<i class="fa-solid fa-circle-check"></i> Payment Settled! Digital Receipt #REC-9823 Sent via SMS`;
-                document.getElementById('invStatus').className = "px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[10px]";
-                document.getElementById('invStatus').innerText = "Paid & Settled";
-            }, 1200);
-        }
-
-        function bookHealthPackage(pkgName) {
-            alert(`🏥 You selected: ${pkgName}\nOur health coordinator will call you within 15 minutes to schedule your fasting lab sample collection!`);
-        }
-
-        function handleQuickSearch(e) {
-            if (e.key === 'Enter') {
-                document.getElementById('doctors-catalog').scrollIntoView({ behavior: 'smooth' });
+            const pid = parseInt(document.getElementById('docModalPatientId').value);
+            const p = inpatients.find(item => item.id === pid);
+            if (p) {
+                p.medicines = document.getElementById('docModalMeds').value;
+                p.status = document.getElementById('docModalStatus').value;
+                if (p.status === 'Discharged' && p.dischargedOn === 'Active Stay') {
+                    p.dischargedOn = new Date().toISOString().split('T')[0];
+                }
+                closeModal('doctorConsultModal');
+                renderDoctorWorkstation();
+                renderAdminInpatients();
+                alert(`✅ Medical record updated successfully for ${p.name}!`);
             }
         }
 
+        // =====================================================================
+        // ADMIN MANAGEMENT ENGINE
+        // =====================================================================
+        function renderAdminInpatients(list = inpatients) {
+            const tbody = document.getElementById('adminInpatientTableBody');
+            document.getElementById('admTotalPatients').innerText = `${inpatients.filter(p => p.status === 'Active').length} Active`;
+
+            tbody.innerHTML = list.map(p => `
+                <tr class="hover:bg-slate-50 transition">
+                    <td class="p-4 font-mono font-bold text-purple-700">#${p.id}</td>
+                    <td class="p-4 font-bold text-slate-900">${p.name}</td>
+                    <td class="p-4 text-slate-700 font-semibold">${p.doctor}</td>
+                    <td class="p-4 text-teal-800 font-bold">${p.room}</td>
+                    <td class="p-4 font-mono text-slate-600">${p.admittedOn}</td>
+                    <td class="p-4 font-mono ${p.dischargedOn === 'Active Stay' ? 'text-amber-600 font-bold' : 'text-slate-500'}">${p.dischargedOn}</td>
+                    <td class="p-4 font-mono text-[11px] text-slate-600 max-w-xs truncate" title="${p.medicines}">${p.medicines}</td>
+                    <td class="p-4 text-center">
+                        <span class="px-2.5 py-0.5 rounded-full ${p.status === 'Active' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700'} text-[10px] font-bold">
+                            ${p.status}
+                        </span>
+                    </td>
+                    <td class="p-4 text-center space-x-1">
+                        ${p.status === 'Active' ? `
+                            <button onclick="adminDischargePatient(${p.id})" class="px-2.5 py-1 rounded bg-amber-100 hover:bg-amber-600 text-amber-900 hover:text-white font-bold text-[10px] transition border border-amber-300">
+                                Discharge
+                            </button>
+                        ` : `<span class="text-slate-400 text-[10px]">Settled</span>`}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function filterAdminInpatients() {
+            const q = document.getElementById('adminSearchInput').value.toLowerCase();
+            const filtered = inpatients.filter(p => 
+                p.name.toLowerCase().includes(q) || 
+                p.room.toLowerCase().includes(q) || 
+                p.doctor.toLowerCase().includes(q)
+            );
+            renderAdminInpatients(filtered);
+        }
+
+        function adminDischargePatient(id) {
+            const p = inpatients.find(item => item.id === id);
+            if (p && confirm(`Confirm discharge for ${p.name}? This will free up ${p.room}.`)) {
+                p.status = "Discharged";
+                p.dischargedOn = new Date().toISOString().split('T')[0];
+
+                // Free up room
+                const room = roomsData.find(r => r.name === p.room);
+                if (room) {
+                    room.status = "Available";
+                    room.patient = "-";
+                }
+
+                renderRooms();
+                renderAdminInpatients();
+                renderDoctorWorkstation();
+                alert(`✅ Patient ${p.name} discharged on ${p.dischargedOn}. Bed is now Available!`);
+            }
+        }
+
+        function handleAdmitPatient(e) {
+            e.preventDefault();
+            const name = document.getElementById('admNewName').value;
+            const doc = document.getElementById('admNewDoc').value;
+            const room = document.getElementById('admNewRoom').value;
+            const meds = document.getElementById('admNewMeds').value;
+            const date = document.getElementById('admNewDate').value;
+
+            const docObj = doctorsList.find(d => d.name === doc);
+
+            const newInpatient = {
+                id: 100 + inpatients.length + 1,
+                name: name,
+                age: 35,
+                gender: "Other",
+                phone: "9870011223",
+                doctor: doc,
+                doctorId: docObj ? docObj.id : 1,
+                room: room.split('(')[0].trim(),
+                admittedOn: date,
+                dischargedOn: "Active Stay",
+                medicines: meds,
+                status: "Active",
+                bill: "₹12,000.00"
+            };
+
+            inpatients.unshift(newInpatient);
+
+            // Mark room occupied
+            const roomObj = roomsData.find(r => r.name === newInpatient.room);
+            if (roomObj) {
+                roomObj.status = "Occupied";
+                roomObj.patient = name;
+            }
+
+            closeModal('admitPatientModal');
+            renderRooms();
+            renderAdminInpatients();
+            renderDoctorWorkstation();
+            alert(`✅ Inpatient ${name} successfully admitted into ${newInpatient.room} under ${doc}!`);
+        }
+
+        // =====================================================================
+        // MODAL HELPERS
+        // =====================================================================
         function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+        function openLoginModal() { openModal('loginModal'); }
     </script>
 </body>
 </html>
