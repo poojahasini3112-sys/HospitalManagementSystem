@@ -54,7 +54,7 @@ public class HospitalDashboard extends JFrame {
     private JLabel lblTotalRevenue;
 
     public HospitalDashboard() {
-        setTitle("Hospital Management System | Java Swing + MySQL");
+        setTitle("MediTrack - Hospital Management System | Java Swing + MySQL");
         setSize(1050, 680);
         setMinimumSize(new Dimension(950, 600));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
