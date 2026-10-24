@@ -15,7 +15,7 @@ public class DatabaseConnection {
     private static String user = System.getProperty("db.user", 
             System.getenv().getOrDefault("DB_USER", "root"));
     private static String password = System.getProperty("db.password", 
-            System.getenv().getOrDefault("DB_PASSWORD", "root")); // Set this to your MySQL root password
+            System.getenv().getOrDefault("DB_PASSWORD", "Poojitha_31")); // Set to your MySQL root password
 
     // Static block to register MySQL driver
     static {
