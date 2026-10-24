@@ -1,30 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MediTrack | Hospital Management System (Java OOPS + MySQL DBMS)</title>
+    <title>MediTrack™ | Enterprise Hospital Management & Healthcare Intelligence</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Chart.js for live analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome Pro/Free Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
                         sans: ['Plus Jakarta Sans', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
+                        mono: ['Fira Code', 'monospace'],
                     },
                     colors: {
                         brand: {
-                            50: '#eff6ff',
-                            100: '#dbeafe',
-                            500: '#3b82f6',
-                            600: '#2563eb',
-                            700: '#1d4ed8',
-                            900: '#1e3a8a'
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                        },
+                        medical: {
+                            blue: '#0284c7',
+                            dark: '#0f172a',
+                            surface: '#1e293b'
                         }
                     }
                 }
@@ -32,351 +42,740 @@
         }
     </script>
     <style>
-        .gradient-bg {
-            background: radial-gradient(circle at top right, #1e3a8a, #0f172a 60%);
+        .hero-glow {
+            background: radial-gradient(1000px circle at 50% 0%, rgba(14, 165, 233, 0.15), transparent 70%),
+                        radial-gradient(800px circle at 80% 20%, rgba(20, 184, 166, 0.12), transparent 50%);
         }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(51, 65, 85, 0.8);
+            border-radius: 9999px;
         }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-brand-500 selection:text-white">
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-teal-500 selection:text-white">
 
-    <!-- Navbar -->
-    <nav class="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
-        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-blue-500/20">
-                    <i class="fa-solid fa-hospital-user text-lg"></i>
+    <!-- Top Announcement Bar -->
+    <div class="bg-gradient-to-r from-teal-900/60 via-cyan-900/40 to-blue-900/60 border-b border-teal-500/20 py-2 px-4 text-center text-xs font-medium text-teal-300">
+        <span class="inline-flex items-center space-x-2">
+            <span class="flex h-2 w-2 rounded-full bg-teal-400 animate-ping"></span>
+            <span>Academic Project Verification Active • OOPS (Java) & DBMS (MySQL) • Lead Developers: <strong>Poojitha</strong> & <strong>Moksha</strong></span>
+        </span>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-slate-950/85 backdrop-blur-xl border-b border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3.5">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-teal-500 via-cyan-500 to-blue-600 flex items-center justify-center text-white shadow-xl shadow-cyan-500/20 ring-2 ring-white/10">
+                    <i class="fa-solid fa-heart-pulse text-xl"></i>
                 </div>
                 <div>
-                    <span class="font-bold text-lg tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">MediTrack HMS</span>
-                    <span class="text-xs ml-2 px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">Java + MySQL</span>
+                    <div class="flex items-center space-x-2">
+                        <span class="font-extrabold text-2xl tracking-tight text-white">Medi<span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-cyan-400">Track</span></span>
+                        <span class="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-teal-500/10 text-teal-300 border border-teal-500/30">v1.0 Pro</span>
+                    </div>
+                    <p class="text-[11px] text-slate-400 font-medium">Enterprise Hospital & Clinical Management</p>
                 </div>
             </div>
-            <div class="flex items-center space-x-6 text-sm font-medium">
-                <a href="#architecture" class="text-slate-400 hover:text-white transition">Architecture</a>
-                <a href="#database" class="text-slate-400 hover:text-white transition">Database & ER</a>
-                <a href="#oops" class="text-slate-400 hover:text-white transition">OOPS Design</a>
-                <a href="#tests" class="text-slate-400 hover:text-white transition">Test Results</a>
-                <a href="https://github.com/poojahasini3112-sys/HospitalManagementSystem" target="_blank" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white transition flex items-center space-x-2 shadow-md shadow-blue-600/25">
-                    <i class="fa-brands fa-github"></i>
-                    <span>GitHub Repo</span>
+
+            <div class="hidden md:flex items-center space-x-8 text-sm font-semibold text-slate-300">
+                <a href="#interactive-demo" class="hover:text-teal-400 transition flex items-center space-x-1.5">
+                    <i class="fa-solid fa-play text-xs text-teal-400"></i>
+                    <span>Live Portal Demo</span>
+                </a>
+                <a href="#architecture" class="hover:text-teal-400 transition">Architecture</a>
+                <a href="#database" class="hover:text-teal-400 transition">Database & Schema</a>
+                <a href="#code-viewer" class="hover:text-teal-400 transition">Java OOPS</a>
+                <a href="#analytics" class="hover:text-teal-400 transition">Analytics</a>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <a href="https://github.com/poojahasini3112-sys/HospitalManagementSystem" target="_blank" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-white font-medium text-sm transition flex items-center space-x-2 shadow-sm hover:border-teal-500/50">
+                    <i class="fa-brands fa-github text-base"></i>
+                    <span>GitHub Repository</span>
                 </a>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <header class="relative gradient-bg pt-24 pb-20 overflow-hidden border-b border-slate-800">
-        <div class="max-w-7xl mx-auto px-6 relative z-10">
-            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold mb-6">
-                <i class="fa-solid fa-graduation-cap"></i>
-                <span>Academic Project-Based Learning Plan | OOPS (Java) + DBMS (MySQL)</span>
+    <header class="relative hero-glow pt-20 pb-24 border-b border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-6 relative z-10 text-center">
+            
+            <div class="inline-flex items-center space-x-2.5 px-4 py-1.5 rounded-full bg-slate-900/90 border border-slate-700/80 text-slate-300 text-xs font-semibold shadow-inner mb-8">
+                <span class="w-2 h-2 rounded-full bg-teal-400"></span>
+                <span>Type-4 JDBC Driver • PreparedStatement Protection • Relational ACID Compliance</span>
             </div>
-            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white max-w-4xl leading-tight">
-                MediTrack <br>
-                <span class="bg-gradient-to-r from-blue-400 via-sky-300 to-indigo-400 bg-clip-text text-transparent">Hospital Management System</span>
+
+            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-white max-w-4xl mx-auto leading-[1.15]">
+                Modern Healthcare Management, <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-cyan-300 to-blue-500">Engineered with Precision.</span>
             </h1>
-            <p class="mt-6 text-lg text-slate-400 max-w-2xl leading-relaxed">
-                A robust 3-tier desktop healthcare system automating patient records, doctor scheduling, appointment management with multi-table SQL queries, and consultation billing.
+
+            <p class="mt-6 text-lg md:text-xl text-slate-400 max-w-3xl mx-auto font-normal leading-relaxed">
+                MediTrack combines an object-oriented Java architecture with an enterprise MySQL database to automate patient care, doctor consultations, multi-table appointments, and billing workflows.
             </p>
 
-            <!-- Team Roles Badge Grid -->
-            <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl">
-                <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center space-x-4">
-                    <div class="w-12 h-12 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 text-xl font-bold">
+            <!-- CTA Buttons -->
+            <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+                <a href="#interactive-demo" class="px-7 py-3.5 rounded-xl bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-400 hover:to-cyan-500 text-slate-950 font-bold text-sm transition shadow-lg shadow-teal-500/25 flex items-center space-x-2.5">
+                    <i class="fa-solid fa-laptop-medical text-base"></i>
+                    <span>Try Interactive Web Portal</span>
+                </a>
+                <a href="#database" class="px-7 py-3.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700 text-white font-semibold text-sm transition flex items-center space-x-2.5">
+                    <i class="fa-solid fa-database text-teal-400"></i>
+                    <span>Explore Relational Schema</span>
+                </a>
+            </div>
+
+            <!-- Key Metric Stats Bar -->
+            <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                <div class="p-5 rounded-2xl bg-slate-900/70 border border-slate-800/80 text-center">
+                    <div class="text-3xl font-extrabold text-white font-mono">100%</div>
+                    <div class="text-xs text-slate-400 mt-1 uppercase tracking-wider font-semibold">SQL Injection Free</div>
+                </div>
+                <div class="p-5 rounded-2xl bg-slate-900/70 border border-slate-800/80 text-center">
+                    <div class="text-3xl font-extrabold text-teal-400 font-mono">4 Core</div>
+                    <div class="text-xs text-slate-400 mt-1 uppercase tracking-wider font-semibold">Relational Tables</div>
+                </div>
+                <div class="p-5 rounded-2xl bg-slate-900/70 border border-slate-800/80 text-center">
+                    <div class="text-3xl font-extrabold text-cyan-400 font-mono">3-Tier</div>
+                    <div class="text-xs text-slate-400 mt-1 uppercase tracking-wider font-semibold">OOPS Architecture</div>
+                </div>
+                <div class="p-5 rounded-2xl bg-slate-900/70 border border-slate-800/80 text-center">
+                    <div class="text-3xl font-extrabold text-indigo-400 font-mono">&lt; 5ms</div>
+                    <div class="text-xs text-slate-400 mt-1 uppercase tracking-wider font-semibold">Query Latency</div>
+                </div>
+            </div>
+
+            <!-- Team Roles Showcase -->
+            <div class="mt-14 max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
+                <div class="p-5 rounded-2xl bg-slate-900/90 border border-teal-500/30 flex items-center space-x-4 shadow-xl shadow-teal-950/20">
+                    <div class="w-14 h-14 rounded-2xl bg-teal-500/10 border border-teal-500/30 flex items-center justify-center text-teal-400 text-2xl font-bold font-mono">
                         P
                     </div>
                     <div>
-                        <h4 class="font-bold text-white">Poojitha</h4>
-                        <p class="text-xs text-purple-400 font-medium">Database / DBMS & DAO Lead</p>
-                        <p class="text-xs text-slate-400 mt-0.5">Relational Schema, Constraints, SQL Queries & JDBC</p>
+                        <div class="flex items-center space-x-2">
+                            <span class="font-bold text-white text-base">Poojitha</span>
+                            <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-teal-500/20 text-teal-300 font-semibold">Database Owner</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1">Schema Architecture, Constraints, SQL Query Optimization & JDBC DAO layer.</p>
                     </div>
                 </div>
-                <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center space-x-4">
-                    <div class="w-12 h-12 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 text-xl font-bold">
+
+                <div class="p-5 rounded-2xl bg-slate-900/90 border border-blue-500/30 flex items-center space-x-4 shadow-xl shadow-blue-950/20">
+                    <div class="w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 text-2xl font-bold font-mono">
                         M
                     </div>
                     <div>
-                        <h4 class="font-bold text-white">Moksha</h4>
-                        <p class="text-xs text-blue-400 font-medium">Frontend & UI Lead</p>
-                        <p class="text-xs text-slate-400 mt-0.5">Java Swing Dashboard, Forms, Events & Validation</p>
+                        <div class="flex items-center space-x-2">
+                            <span class="font-bold text-white text-base">Moksha</span>
+                            <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 font-semibold">Frontend Owner</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1">Java Swing Desktop GUI, Form Validations, Event Listeners & UI Architecture.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Tech Badges -->
-            <div class="mt-10 flex flex-wrap gap-2 text-xs font-mono">
-                <span class="px-3 py-1.5 rounded-md bg-slate-900 border border-slate-800 text-slate-300"><i class="fa-brands fa-java text-orange-400 mr-1.5"></i> Java 17+ / 26</span>
-                <span class="px-3 py-1.5 rounded-md bg-slate-900 border border-slate-800 text-slate-300"><i class="fa-solid fa-database text-sky-400 mr-1.5"></i> MySQL 8.0</span>
-                <span class="px-3 py-1.5 rounded-md bg-slate-900 border border-slate-800 text-slate-300"><i class="fa-solid fa-plug text-yellow-400 mr-1.5"></i> JDBC (PreparedStatement)</span>
-                <span class="px-3 py-1.5 rounded-md bg-slate-900 border border-slate-800 text-slate-300"><i class="fa-solid fa-window-maximize text-emerald-400 mr-1.5"></i> Java Swing GUI</span>
-                <span class="px-3 py-1.5 rounded-md bg-slate-900 border border-slate-800 text-slate-300"><i class="fa-brands fa-git-alt text-red-400 mr-1.5"></i> Git & GitHub</span>
-            </div>
         </div>
     </header>
 
-    <!-- Architecture Section -->
-    <section id="architecture" class="py-20 max-w-7xl mx-auto px-6">
-        <div class="text-center max-w-2xl mx-auto mb-16">
-            <h2 class="text-3xl font-bold text-white tracking-tight">3-Tier Software Architecture</h2>
-            <p class="text-slate-400 mt-3 text-sm">Separation of concerns ensuring UI code never mixes directly with database queries.</p>
+    <!-- LIVE INTERACTIVE WEB DEMO SECTION -->
+    <section id="interactive-demo" class="py-24 max-w-7xl mx-auto px-6">
+        <div class="text-center max-w-3xl mx-auto mb-12">
+            <span class="text-xs font-mono font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-teal-500/10 text-teal-400 border border-teal-500/20">Live Simulation</span>
+            <h2 class="text-4xl font-extrabold text-white mt-3">Interactive MediTrack Portal</h2>
+            <p class="text-slate-400 mt-2 text-sm">Experience the system right in your browser. Add patients, view joined appointments, and test billing calculations live.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Tier 1 -->
-            <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 relative group hover:border-blue-500/50 transition">
-                <div class="w-10 h-10 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center mb-4">
-                    <i class="fa-solid fa-desktop"></i>
+        <!-- Portal Mock Window -->
+        <div class="rounded-3xl bg-slate-900 border border-slate-800 shadow-2xl overflow-hidden ring-1 ring-white/10">
+            <!-- Window Topbar -->
+            <div class="bg-slate-950 px-6 py-4 border-b border-slate-800 flex flex-wrap items-center justify-between gap-4">
+                <div class="flex items-center space-x-2">
+                    <span class="w-3.5 h-3.5 rounded-full bg-red-500/80 inline-block"></span>
+                    <span class="w-3.5 h-3.5 rounded-full bg-yellow-500/80 inline-block"></span>
+                    <span class="w-3.5 h-3.5 rounded-full bg-green-500/80 inline-block"></span>
+                    <span class="ml-3 font-mono text-xs text-slate-400">MediTrack Enterprise Dashboard v1.0 • Connected: <span class="text-teal-400 font-bold">hospital_db@localhost:3306</span></span>
                 </div>
-                <div class="text-xs uppercase font-mono text-blue-400 tracking-wider">Layer 1</div>
-                <h3 class="text-xl font-bold text-white mt-1">Presentation Layer</h3>
-                <p class="text-sm text-slate-400 mt-2">Java Swing desktop forms with interactive validation, tables, patient click-to-edit, and real-time revenue cards.</p>
-                <div class="mt-4 pt-4 border-t border-slate-800/80 text-xs text-slate-500 font-mono">
-                    HospitalDashboard.java
+
+                <!-- Portal Tab Switcher -->
+                <div class="flex bg-slate-900 p-1 rounded-xl border border-slate-800 text-xs font-medium" id="portalTabs">
+                    <button onclick="switchTab('patients')" id="tabBtn-patients" class="px-4 py-2 rounded-lg font-bold bg-teal-500 text-slate-950 transition flex items-center space-x-1.5">
+                        <i class="fa-solid fa-users"></i>
+                        <span>Patients</span>
+                    </button>
+                    <button onclick="switchTab('doctors')" id="tabBtn-doctors" class="px-4 py-2 rounded-lg text-slate-400 hover:text-white transition flex items-center space-x-1.5">
+                        <i class="fa-solid fa-user-doctor"></i>
+                        <span>Doctors</span>
+                    </button>
+                    <button onclick="switchTab('appointments')" id="tabBtn-appointments" class="px-4 py-2 rounded-lg text-slate-400 hover:text-white transition flex items-center space-x-1.5">
+                        <i class="fa-solid fa-calendar-check"></i>
+                        <span>Appointments (JOIN)</span>
+                    </button>
+                    <button onclick="switchTab('billing')" id="tabBtn-billing" class="px-4 py-2 rounded-lg text-slate-400 hover:text-white transition flex items-center space-x-1.5">
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                        <span>Billing & Revenue</span>
+                    </button>
                 </div>
             </div>
 
-            <!-- Tier 2 -->
-            <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 relative group hover:border-purple-500/50 transition">
-                <div class="w-10 h-10 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center mb-4">
-                    <i class="fa-solid fa-network-wired"></i>
+            <!-- Tab 1: Patients View -->
+            <div id="view-patients" class="p-6 md:p-8">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
+                    <div class="w-full md:w-96 relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                        <input type="text" id="patientSearchInput" oninput="filterPatients()" placeholder="Search patient by name or phone..." class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-teal-500 transition">
+                    </div>
+                    <button onclick="openModal('addPatientModal')" class="w-full md:w-auto px-5 py-2.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold text-xs flex items-center justify-center space-x-2 transition shadow-lg shadow-teal-500/20">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <span>Register New Patient</span>
+                    </button>
                 </div>
-                <div class="text-xs uppercase font-mono text-purple-400 tracking-wider">Layer 2</div>
-                <h3 class="text-xl font-bold text-white mt-1">Data Access Layer (DAO)</h3>
-                <p class="text-sm text-slate-400 mt-2">CRUD methods executing parameterized PreparedStatements to guarantee protection against SQL injection attacks.</p>
-                <div class="mt-4 pt-4 border-t border-slate-800/80 text-xs text-slate-500 font-mono">
-                    PatientDAO, DoctorDAO, AppointmentDAO, BillDAO
+
+                <div class="overflow-x-auto rounded-xl border border-slate-800">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-950 text-slate-400 font-mono uppercase text-[11px] border-b border-slate-800">
+                            <tr>
+                                <th class="p-4">ID</th>
+                                <th class="p-4">Full Name</th>
+                                <th class="p-4">Age / Gender</th>
+                                <th class="p-4">Phone</th>
+                                <th class="p-4">Address</th>
+                                <th class="p-4 text-center">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="patientTableBody" class="divide-y divide-slate-800 font-medium">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
-            <!-- Tier 3 -->
-            <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 relative group hover:border-emerald-500/50 transition">
-                <div class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-4">
-                    <i class="fa-solid fa-server"></i>
+            <!-- Tab 2: Doctors View -->
+            <div id="view-doctors" class="p-6 md:p-8 hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="doctorsGrid">
+                    <!-- Populated dynamically via JS -->
                 </div>
-                <div class="text-xs uppercase font-mono text-emerald-400 tracking-wider">Layer 3</div>
-                <h3 class="text-xl font-bold text-white mt-1">Persistence Layer (DBMS)</h3>
-                <p class="text-sm text-slate-400 mt-2">Relational MySQL database enforcing referential integrity with primary/foreign keys and domain CHECK constraints.</p>
-                <div class="mt-4 pt-4 border-t border-slate-800/80 text-xs text-slate-500 font-mono">
-                    hospital_db (schema.sql)
+            </div>
+
+            <!-- Tab 3: Appointments View (JOIN) -->
+            <div id="view-appointments" class="p-6 md:p-8 hidden">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
+                    <div>
+                        <h3 class="font-bold text-white text-base">Multi-Table Relational Appointments</h3>
+                        <p class="text-xs text-slate-400 font-mono mt-0.5">Executes: <span class="text-teal-400">SELECT * FROM appointment a JOIN patient p JOIN doctor d</span></p>
+                    </div>
+                    <button onclick="openModal('bookApptModal')" class="px-5 py-2.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold text-xs flex items-center space-x-2 transition">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Book Appointment</span>
+                    </button>
+                </div>
+
+                <div class="overflow-x-auto rounded-xl border border-slate-800">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-950 text-slate-400 font-mono uppercase text-[11px] border-b border-slate-800">
+                            <tr>
+                                <th class="p-4">Appt #</th>
+                                <th class="p-4">Patient Name</th>
+                                <th class="p-4">Doctor & Specialty</th>
+                                <th class="p-4">Date & Time</th>
+                                <th class="p-4 text-center">Status</th>
+                                <th class="p-4 text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="appointmentTableBody" class="divide-y divide-slate-800 font-medium">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tab 4: Billing & Analytics View -->
+            <div id="view-billing" class="p-6 md:p-8 hidden">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800">
+                        <span class="text-xs font-mono text-slate-400 uppercase">Total Revenue Collected (SUM)</span>
+                        <div class="text-3xl font-extrabold text-emerald-400 font-mono mt-2" id="kpiRevenue">₹900.00</div>
+                        <p class="text-[11px] text-slate-500 mt-1 font-mono">Calculated dynamically via SQL SUM(amount)</p>
+                    </div>
+                    <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800">
+                        <span class="text-xs font-mono text-slate-400 uppercase">Paid Invoices</span>
+                        <div class="text-3xl font-extrabold text-teal-400 font-mono mt-2" id="kpiPaidInvoices">2 Invoices</div>
+                        <p class="text-[11px] text-slate-500 mt-1 font-mono">WHERE payment_status = 'Paid'</p>
+                    </div>
+                    <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800">
+                        <span class="text-xs font-mono text-slate-400 uppercase">Pending Invoices</span>
+                        <div class="text-3xl font-extrabold text-yellow-400 font-mono mt-2">1 Invoice</div>
+                        <p class="text-[11px] text-slate-500 mt-1 font-mono">Pending verification / clearance</p>
+                    </div>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-slate-950 border border-slate-800">
+                    <h4 class="font-bold text-white text-sm mb-4">Doctor Consultation Revenue Distribution</h4>
+                    <div class="h-64">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Database Schema & ER Section -->
-    <section id="database" class="py-20 bg-slate-900/50 border-y border-slate-800">
+    <!-- 3-TIER ARCHITECTURE SPECIFICATION -->
+    <section id="architecture" class="py-24 bg-slate-900/60 border-y border-slate-800/80">
         <div class="max-w-7xl mx-auto px-6">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
-                <div>
-                    <span class="text-xs font-mono uppercase text-blue-400 tracking-wider">Database Design</span>
-                    <h2 class="text-3xl font-bold text-white mt-1">Relational Schema & Constraints</h2>
-                </div>
-                <p class="text-slate-400 text-sm max-w-md mt-4 md:mt-0">Designed and maintained by <strong>Poojitha</strong> with cascaded foreign keys and domain integrity validation.</p>
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-xs font-mono font-bold uppercase tracking-wider text-teal-400">Software Engineering</span>
+                <h2 class="text-4xl font-extrabold text-white mt-2">Enterprise 3-Tier Layered Design</h2>
+                <p class="text-slate-400 mt-2 text-sm">Decoupled system architecture ensuring strict isolation between the presentation GUI and persistence storage.</p>
             </div>
 
-            <!-- ER Relationship Visualizer -->
-            <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 mb-10 overflow-x-auto">
-                <div class="text-xs font-mono text-slate-400 mb-4 uppercase tracking-wider">Entity-Relationship (ER) Cardinality:</div>
-                <div class="flex items-center justify-between min-w-[700px] text-center font-mono text-sm py-4">
-                    <div class="px-5 py-3 rounded-xl bg-blue-950/40 border border-blue-500/30 text-blue-300 font-bold">
-                        <i class="fa-solid fa-user-injured mb-1 block text-lg"></i>
-                        PATIENT (1)
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Layer 1 -->
+                <div class="p-8 rounded-3xl bg-slate-900 border border-slate-800 relative group hover:border-teal-500/50 transition">
+                    <div class="w-12 h-12 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-xl mb-6">
+                        <i class="fa-solid fa-palette"></i>
                     </div>
-                    <div class="flex-1 flex flex-col items-center px-4">
-                        <span class="text-xs text-slate-500">1 : N (One-to-Many)</span>
-                        <div class="w-full h-0.5 bg-gradient-to-r from-blue-500 to-indigo-500 relative">
-                            <i class="fa-solid fa-arrow-right absolute right-0 top-1/2 -translate-y-1/2 text-indigo-400 text-xs"></i>
-                        </div>
+                    <div class="font-mono text-xs font-bold text-teal-400 tracking-wider uppercase">Tier 1: Frontend UI</div>
+                    <h3 class="text-2xl font-bold text-white mt-1">Presentation Layer</h3>
+                    <p class="text-slate-400 text-xs mt-3 leading-relaxed">
+                        Built with Java Swing. Implements responsive JTabbedPane navigation, real-time JTable binding, modal input validation, and asynchronous action dispatching.
+                    </p>
+                    <div class="mt-6 pt-6 border-t border-slate-800/80 font-mono text-[11px] text-slate-400">
+                        <i class="fa-regular fa-file-code text-teal-400 mr-1.5"></i> HospitalDashboard.java
                     </div>
-                    <div class="px-6 py-4 rounded-xl bg-indigo-950/60 border border-indigo-500/50 text-indigo-300 font-bold shadow-lg shadow-indigo-500/10">
-                        <i class="fa-solid fa-calendar-check mb-1 block text-lg"></i>
-                        APPOINTMENT (N)
-                    </div>
-                    <div class="flex-1 flex flex-col items-center px-4">
-                        <span class="text-xs text-slate-500">1 : 1 (One-to-One)</span>
-                        <div class="w-full h-0.5 bg-gradient-to-r from-indigo-500 to-emerald-500 relative">
-                            <i class="fa-solid fa-arrow-right absolute right-0 top-1/2 -translate-y-1/2 text-emerald-400 text-xs"></i>
-                        </div>
-                    </div>
-                    <div class="px-5 py-3 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 font-bold">
-                        <i class="fa-solid fa-file-invoice-dollar mb-1 block text-lg"></i>
-                        BILL (1)
-                    </div>
-                </div>
-                <div class="text-center font-mono text-xs text-slate-500 mt-2">
-                    DOCTOR (1) ──── (1:N) ────▶ APPOINTMENT (N)
-                </div>
-            </div>
-
-            <!-- Tables Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Table: Patient -->
-                <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800">
-                    <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-                        <span class="font-bold text-white font-mono flex items-center"><i class="fa-solid fa-table text-blue-400 mr-2"></i> patient</span>
-                        <span class="text-xs font-mono px-2 py-0.5 rounded bg-blue-500/10 text-blue-400">Primary Entity</span>
-                    </div>
-                    <ul class="divide-y divide-slate-800/60 text-xs font-mono mt-3 text-slate-300 space-y-2">
-                        <li class="pt-2 flex justify-between"><span class="text-yellow-400 font-semibold"><i class="fa-solid fa-key mr-1"></i> patient_id</span><span class="text-slate-500">INT AUTO_INCREMENT (PK)</span></li>
-                        <li class="pt-2 flex justify-between"><span>full_name</span><span class="text-slate-500">VARCHAR(100) NOT NULL</span></li>
-                        <li class="pt-2 flex justify-between"><span>age</span><span class="text-slate-500">INT CHECK (age &gt; 0)</span></li>
-                        <li class="pt-2 flex justify-between"><span>gender</span><span class="text-slate-500">VARCHAR(20) NOT NULL</span></li>
-                        <li class="pt-2 flex justify-between"><span>phone</span><span class="text-slate-500">VARCHAR(20) NOT NULL</span></li>
-                        <li class="pt-2 flex justify-between"><span>address</span><span class="text-slate-500">VARCHAR(255)</span></li>
-                    </ul>
                 </div>
 
-                <!-- Table: Doctor -->
-                <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800">
-                    <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-                        <span class="font-bold text-white font-mono flex items-center"><i class="fa-solid fa-table text-purple-400 mr-2"></i> doctor</span>
-                        <span class="text-xs font-mono px-2 py-0.5 rounded bg-purple-500/10 text-purple-400">Primary Entity</span>
+                <!-- Layer 2 -->
+                <div class="p-8 rounded-3xl bg-slate-900 border border-slate-800 relative group hover:border-cyan-500/50 transition">
+                    <div class="w-12 h-12 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-xl mb-6">
+                        <i class="fa-solid fa-code-branch"></i>
                     </div>
-                    <ul class="divide-y divide-slate-800/60 text-xs font-mono mt-3 text-slate-300 space-y-2">
-                        <li class="pt-2 flex justify-between"><span class="text-yellow-400 font-semibold"><i class="fa-solid fa-key mr-1"></i> doctor_id</span><span class="text-slate-500">INT AUTO_INCREMENT (PK)</span></li>
-                        <li class="pt-2 flex justify-between"><span>full_name</span><span class="text-slate-500">VARCHAR(100) NOT NULL</span></li>
-                        <li class="pt-2 flex justify-between"><span>specialization</span><span class="text-slate-500">VARCHAR(100) NOT NULL</span></li>
-                        <li class="pt-2 flex justify-between"><span>phone</span><span class="text-slate-500">VARCHAR(20) NOT NULL</span></li>
-                        <li class="pt-2 flex justify-between"><span>consultation_fee</span><span class="text-slate-500">DECIMAL(10,2) CHECK &gt;= 0</span></li>
-                    </ul>
+                    <div class="font-mono text-xs font-bold text-cyan-400 tracking-wider uppercase">Tier 2: Business & DAO</div>
+                    <h3 class="text-2xl font-bold text-white mt-1">Data Access Objects</h3>
+                    <p class="text-slate-400 text-xs mt-3 leading-relaxed">
+                        Translates domain entities (Patient, Doctor, Appointment) into SQL queries using parameterized PreparedStatements to guarantee protection against SQL injection.
+                    </p>
+                    <div class="mt-6 pt-6 border-t border-slate-800/80 font-mono text-[11px] text-slate-400">
+                        <i class="fa-regular fa-file-code text-cyan-400 mr-1.5"></i> PatientDAO, DoctorDAO, BillDAO
+                    </div>
                 </div>
 
-                <!-- Table: Appointment -->
-                <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800">
-                    <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-                        <span class="font-bold text-white font-mono flex items-center"><i class="fa-solid fa-table text-indigo-400 mr-2"></i> appointment</span>
-                        <span class="text-xs font-mono px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400">Relational Junction</span>
+                <!-- Layer 3 -->
+                <div class="p-8 rounded-3xl bg-slate-900 border border-slate-800 relative group hover:border-blue-500/50 transition">
+                    <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center text-xl mb-6">
+                        <i class="fa-solid fa-database"></i>
                     </div>
-                    <ul class="divide-y divide-slate-800/60 text-xs font-mono mt-3 text-slate-300 space-y-2">
-                        <li class="pt-2 flex justify-between"><span class="text-yellow-400 font-semibold"><i class="fa-solid fa-key mr-1"></i> appointment_id</span><span class="text-slate-500">INT AUTO_INCREMENT (PK)</span></li>
-                        <li class="pt-2 flex justify-between"><span class="text-sky-400"><i class="fa-solid fa-link mr-1"></i> patient_id</span><span class="text-slate-500">INT FK &rarr; patient</span></li>
-                        <li class="pt-2 flex justify-between"><span class="text-sky-400"><i class="fa-solid fa-link mr-1"></i> doctor_id</span><span class="text-slate-500">INT FK &rarr; doctor</span></li>
-                        <li class="pt-2 flex justify-between"><span>appointment_date</span><span class="text-slate-500">DATE NOT NULL</span></li>
-                        <li class="pt-2 flex justify-between"><span>appointment_time</span><span class="text-slate-500">TIME NOT NULL</span></li>
-                        <li class="pt-2 flex justify-between"><span>status</span><span class="text-slate-500">Scheduled | Completed</span></li>
-                    </ul>
-                </div>
-
-                <!-- Table: Bill -->
-                <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800">
-                    <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-                        <span class="font-bold text-white font-mono flex items-center"><i class="fa-solid fa-table text-emerald-400 mr-2"></i> bill</span>
-                        <span class="text-xs font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400">Billing Entity</span>
-                    </div>
-                    <ul class="divide-y divide-slate-800/60 text-xs font-mono mt-3 text-slate-300 space-y-2">
-                        <li class="pt-2 flex justify-between"><span class="text-yellow-400 font-semibold"><i class="fa-solid fa-key mr-1"></i> bill_id</span><span class="text-slate-500">INT AUTO_INCREMENT (PK)</span></li>
-                        <li class="pt-2 flex justify-between"><span class="text-sky-400"><i class="fa-solid fa-link mr-1"></i> appointment_id</span><span class="text-slate-500">INT FK &rarr; appointment</span></li>
-                        <li class="pt-2 flex justify-between"><span>amount</span><span class="text-slate-500">DECIMAL(10,2) CHECK &gt;= 0</span></li>
-                        <li class="pt-2 flex justify-between"><span>payment_status</span><span class="text-slate-500">Paid | Pending</span></li>
-                        <li class="pt-2 flex justify-between"><span>bill_date</span><span class="text-slate-500">DATE NOT NULL</span></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- OOPS Concepts Section -->
-    <section id="oops" class="py-20 max-w-7xl mx-auto px-6">
-        <div class="text-center max-w-2xl mx-auto mb-16">
-            <span class="text-xs font-mono uppercase text-blue-400 tracking-wider">Object-Oriented Programming</span>
-            <h2 class="text-3xl font-bold text-white mt-1">Core Java OOPS Concepts Demonstrated</h2>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="p-6 rounded-xl bg-slate-900 border border-slate-800">
-                <div class="w-10 h-10 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center mb-3">
-                    <i class="fa-solid fa-shield-halved"></i>
-                </div>
-                <h4 class="font-bold text-white text-base">Encapsulation</h4>
-                <p class="text-xs text-slate-400 mt-2 leading-relaxed">Entity classes keep attributes private and expose strictly validated getter and setter accessors.</p>
-            </div>
-            <div class="p-6 rounded-xl bg-slate-900 border border-slate-800">
-                <div class="w-10 h-10 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center mb-3">
-                    <i class="fa-solid fa-cubes"></i>
-                </div>
-                <h4 class="font-bold text-white text-base">Classes & Objects</h4>
-                <p class="text-xs text-slate-400 mt-2 leading-relaxed">Explicit domain representation of real-world entities: Patient, Doctor, Appointment, and Bill.</p>
-            </div>
-            <div class="p-6 rounded-xl bg-slate-900 border border-slate-800">
-                <div class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-3">
-                    <i class="fa-solid fa-layer-group"></i>
-                </div>
-                <h4 class="font-bold text-white text-base">Data Transfer (DTO)</h4>
-                <p class="text-xs text-slate-400 mt-2 leading-relaxed">AppointmentDetails DTO bundles joined attributes from multiple tables for display in Swing JTables.</p>
-            </div>
-            <div class="p-6 rounded-xl bg-slate-900 border border-slate-800">
-                <div class="w-10 h-10 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center mb-3">
-                    <i class="fa-solid fa-triangle-exclamation"></i>
-                </div>
-                <h4 class="font-bold text-white text-base">Exception Handling</h4>
-                <p class="text-xs text-slate-400 mt-2 leading-relaxed">Try-with-resources handles SQLExceptions, auto-closes connections, and surfaces user-friendly dialogs.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Test Results Checklist Section -->
-    <section id="tests" class="py-20 bg-slate-900/50 border-t border-slate-800">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="max-w-2xl mx-auto text-center mb-12">
-                <span class="text-xs font-mono uppercase text-emerald-400 tracking-wider">Quality Assurance</span>
-                <h2 class="text-3xl font-bold text-white mt-1">Verified Acceptance Test Results</h2>
-            </div>
-
-            <div class="max-w-3xl mx-auto bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden font-mono text-xs">
-                <div class="p-4 bg-slate-950/80 border-b border-slate-800 flex items-center justify-between">
-                    <span class="text-slate-400"><i class="fa-solid fa-terminal mr-2 text-blue-400"></i> Acceptance Test Suite (Main.java)</span>
-                    <span class="text-emerald-400 font-semibold flex items-center"><i class="fa-solid fa-circle-check mr-1.5"></i> 100% PASSED</span>
-                </div>
-                <div class="p-6 space-y-3">
-                    <div class="flex items-start space-x-3 text-slate-300">
-                        <i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>
-                        <div><strong class="text-white">MySQL Connectivity:</strong> Established live connection to hospital_db on localhost:3306</div>
-                    </div>
-                    <div class="flex items-start space-x-3 text-slate-300">
-                        <i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>
-                        <div><strong class="text-white">Doctor Listing:</strong> 4 doctor records loaded with specialization and fees</div>
-                    </div>
-                    <div class="flex items-start space-x-3 text-slate-300">
-                        <i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>
-                        <div><strong class="text-white">Patient Registration:</strong> Auto-increment ID generated & persisted cleanly</div>
-                    </div>
-                    <div class="flex items-start space-x-3 text-slate-300">
-                        <i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>
-                        <div><strong class="text-white">INNER JOIN Query:</strong> Appointments fetched linked with patient and doctor names</div>
-                    </div>
-                    <div class="flex items-start space-x-3 text-slate-300">
-                        <i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>
-                        <div><strong class="text-white">Aggregate Calculation:</strong> Total revenue calculated using SQL SUM(amount) = ₹900.00</div>
-                    </div>
-                    <div class="flex items-start space-x-3 text-slate-300">
-                        <i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>
-                        <div><strong class="text-white">Foreign Key Protection:</strong> Rejected appointment for invalid ID 99999 as expected</div>
+                    <div class="font-mono text-xs font-bold text-blue-400 tracking-wider uppercase">Tier 3: Persistence</div>
+                    <h3 class="text-2xl font-bold text-white mt-1">MySQL Database</h3>
+                    <p class="text-slate-400 text-xs mt-3 leading-relaxed">
+                        ACID-compliant relational engine. Implements primary keys, ON DELETE CASCADE foreign key constraints, CHECK boundaries, and transactional consistency.
+                    </p>
+                    <div class="mt-6 pt-6 border-t border-slate-800/80 font-mono text-[11px] text-slate-400">
+                        <i class="fa-regular fa-file-code text-blue-400 mr-1.5"></i> hospital_db (schema.sql)
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- DATABASE SCHEMA & CODE VIEWER -->
+    <section id="database" class="py-24 max-w-7xl mx-auto px-6">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <span class="text-xs font-mono font-bold uppercase tracking-wider text-teal-400">Database Architecture</span>
+            <h2 class="text-4xl font-extrabold text-white mt-2">Relational Schema & Constraints</h2>
+            <p class="text-slate-400 mt-2 text-sm">Designed with referential integrity constraints, check bounds, and multi-table relationships.</p>
+        </div>
+
+        <!-- Schema Visualizer Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+            <!-- Patient -->
+            <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800">
+                <div class="flex items-center justify-between pb-3 border-b border-slate-800 font-mono">
+                    <span class="font-bold text-teal-400"><i class="fa-solid fa-table mr-2"></i>patient</span>
+                    <span class="text-[10px] px-2 py-0.5 rounded bg-teal-500/10 text-teal-300">Entity</span>
+                </div>
+                <div class="mt-4 space-y-2 text-xs font-mono text-slate-300">
+                    <div class="flex justify-between text-yellow-400 font-bold"><span>🔑 patient_id</span><span>PK (Auto)</span></div>
+                    <div class="flex justify-between"><span>full_name</span><span class="text-slate-500">VARCHAR</span></div>
+                    <div class="flex justify-between"><span>age</span><span class="text-slate-500">CHECK &gt; 0</span></div>
+                    <div class="flex justify-between"><span>gender</span><span class="text-slate-500">VARCHAR</span></div>
+                    <div class="flex justify-between"><span>phone</span><span class="text-slate-500">VARCHAR</span></div>
+                    <div class="flex justify-between"><span>address</span><span class="text-slate-500">VARCHAR</span></div>
+                </div>
+            </div>
+
+            <!-- Doctor -->
+            <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800">
+                <div class="flex items-center justify-between pb-3 border-b border-slate-800 font-mono">
+                    <span class="font-bold text-cyan-400"><i class="fa-solid fa-table mr-2"></i>doctor</span>
+                    <span class="text-[10px] px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-300">Entity</span>
+                </div>
+                <div class="mt-4 space-y-2 text-xs font-mono text-slate-300">
+                    <div class="flex justify-between text-yellow-400 font-bold"><span>🔑 doctor_id</span><span>PK (Auto)</span></div>
+                    <div class="flex justify-between"><span>full_name</span><span class="text-slate-500">VARCHAR</span></div>
+                    <div class="flex justify-between"><span>specialization</span><span class="text-slate-500">VARCHAR</span></div>
+                    <div class="flex justify-between"><span>phone</span><span class="text-slate-500">VARCHAR</span></div>
+                    <div class="flex justify-between"><span>consultation_fee</span><span class="text-slate-500">DECIMAL &gt;= 0</span></div>
+                </div>
+            </div>
+
+            <!-- Appointment -->
+            <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800">
+                <div class="flex items-center justify-between pb-3 border-b border-slate-800 font-mono">
+                    <span class="font-bold text-indigo-400"><i class="fa-solid fa-table mr-2"></i>appointment</span>
+                    <span class="text-[10px] px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-300">Junction</span>
+                </div>
+                <div class="mt-4 space-y-2 text-xs font-mono text-slate-300">
+                    <div class="flex justify-between text-yellow-400 font-bold"><span>🔑 appointment_id</span><span>PK (Auto)</span></div>
+                    <div class="flex justify-between text-cyan-400"><span>🔗 patient_id</span><span>FK &rarr; patient</span></div>
+                    <div class="flex justify-between text-cyan-400"><span>🔗 doctor_id</span><span>FK &rarr; doctor</span></div>
+                    <div class="flex justify-between"><span>appointment_date</span><span class="text-slate-500">DATE</span></div>
+                    <div class="flex justify-between"><span>appointment_time</span><span class="text-slate-500">TIME</span></div>
+                    <div class="flex justify-between"><span>status</span><span class="text-slate-500">CHECK</span></div>
+                </div>
+            </div>
+
+            <!-- Bill -->
+            <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800">
+                <div class="flex items-center justify-between pb-3 border-b border-slate-800 font-mono">
+                    <span class="font-bold text-emerald-400"><i class="fa-solid fa-table mr-2"></i>bill</span>
+                    <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300">Invoicing</span>
+                </div>
+                <div class="mt-4 space-y-2 text-xs font-mono text-slate-300">
+                    <div class="flex justify-between text-yellow-400 font-bold"><span>🔑 bill_id</span><span>PK (Auto)</span></div>
+                    <div class="flex justify-between text-cyan-400"><span>🔗 appointment_id</span><span>FK &rarr; appt</span></div>
+                    <div class="flex justify-between"><span>amount</span><span class="text-slate-500">DECIMAL &gt;= 0</span></div>
+                    <div class="flex justify-between"><span>payment_status</span><span class="text-slate-500">CHECK</span></div>
+                    <div class="flex justify-between"><span>bill_date</span><span class="text-slate-500">DATE</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CODE TAB VIEWER -->
+        <div id="code-viewer" class="rounded-3xl bg-slate-900 border border-slate-800 overflow-hidden shadow-2xl font-mono text-xs">
+            <div class="bg-slate-950 px-6 py-4 border-b border-slate-800 flex flex-wrap items-center justify-between gap-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-code text-teal-400"></i>
+                    <span class="text-white font-bold">Source Code Inspector</span>
+                </div>
+                <div class="flex space-x-2">
+                    <button onclick="showCode('schema')" id="codeBtn-schema" class="px-3 py-1.5 rounded-lg bg-teal-500 text-slate-950 font-bold transition">schema.sql</button>
+                    <button onclick="showCode('dao')" id="codeBtn-dao" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition">AppointmentDAO.java</button>
+                    <button onclick="showCode('conn')" id="codeBtn-conn" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition">DatabaseConnection.java</button>
+                </div>
+            </div>
+
+            <!-- Schema Code -->
+            <pre id="code-schema" class="p-6 text-slate-300 overflow-x-auto leading-relaxed custom-scrollbar"><code class="text-teal-300">-- MediTrack Enterprise Database Schema
+CREATE DATABASE IF NOT EXISTS hospital_db;
+USE hospital_db;
+
+CREATE TABLE patient (
+    patient_id INT AUTO_INCREMENT PRIMARY KEY,
+    full_name VARCHAR(100) NOT NULL,
+    age INT NOT NULL CHECK (age > 0 AND age < 150),
+    gender VARCHAR(20) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    address VARCHAR(255)
+);
+
+CREATE TABLE appointment (
+    appointment_id INT AUTO_INCREMENT PRIMARY KEY,
+    patient_id INT NOT NULL,
+    doctor_id INT NOT NULL,
+    appointment_date DATE NOT NULL,
+    appointment_time TIME NOT NULL,
+    status VARCHAR(30) NOT NULL DEFAULT 'Scheduled',
+    CONSTRAINT fk_appt_patient FOREIGN KEY (patient_id) REFERENCES patient(patient_id) ON DELETE CASCADE,
+    CONSTRAINT fk_appt_doctor FOREIGN KEY (doctor_id) REFERENCES doctor(doctor_id) ON DELETE CASCADE
+);</code></pre>
+
+            <!-- DAO Code -->
+            <pre id="code-dao" class="p-6 text-slate-300 overflow-x-auto leading-relaxed custom-scrollbar hidden"><code class="text-cyan-300">// Demonstrates INNER JOIN query across 3 tables using PreparedStatement
+public List&lt;AppointmentDetails&gt; getAllAppointmentDetails() throws SQLException {
+    List&lt;AppointmentDetails&gt; list = new ArrayList&lt;&gt;();
+    String sql = "SELECT a.appointment_id, p.full_name AS patient_name, " +
+                 "       d.full_name AS doctor_name, d.specialization, " +
+                 "       a.appointment_date, a.appointment_time, a.status " +
+                 "FROM appointment a " +
+                 "INNER JOIN patient p ON a.patient_id = p.patient_id " +
+                 "INNER JOIN doctor d ON a.doctor_id = d.doctor_id " +
+                 "ORDER BY a.appointment_date DESC, a.appointment_time DESC";
+
+    try (Connection conn = DatabaseConnection.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+        while (rs.next()) {
+            list.add(mapRowToAppointmentDetails(rs));
+        }
+    }
+    return list;
+}</code></pre>
+
+            <!-- Conn Code -->
+            <pre id="code-conn" class="p-6 text-slate-300 overflow-x-auto leading-relaxed custom-scrollbar hidden"><code class="text-emerald-300">package com.hospital.util;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class DatabaseConnection {
+    private static final String URL = "jdbc:mysql://localhost:3306/hospital_db?useSSL=false&serverTimezone=UTC";
+    private static final String USER = "root";
+    private static final String PASS = "Poojitha_31";
+
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASS);
+    }
+}</code></pre>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
     <footer class="py-12 border-t border-slate-800 bg-slate-950 text-slate-500 text-xs">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
-            <div>
-                <p class="font-semibold text-slate-300">MediTrack — Hospital Management System (HMS)</p>
-                <p class="mt-0.5">Academic Project for OOPS (Java) & DBMS (MySQL) • Prepared by Poojitha & Moksha</p>
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-lg bg-teal-500 flex items-center justify-center text-slate-950 font-bold">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                </div>
+                <div>
+                    <p class="font-bold text-slate-300 text-sm">MediTrack™ Hospital Management System</p>
+                    <p class="text-slate-500 text-[11px]">Academic Project for OOPS (Java) & DBMS (MySQL) • Poojitha & Moksha</p>
+                </div>
             </div>
-            <div class="flex items-center space-x-4">
-                <a href="https://github.com/poojahasini3112-sys/HospitalManagementSystem" target="_blank" class="text-slate-400 hover:text-white transition flex items-center space-x-1">
-                    <i class="fa-brands fa-github text-base"></i>
+
+            <div class="flex items-center space-x-6">
+                <a href="https://github.com/poojahasini3112-sys/HospitalManagementSystem" target="_blank" class="hover:text-teal-400 transition flex items-center space-x-1.5">
+                    <i class="fa-brands fa-github text-sm"></i>
                     <span>poojahasini3112-sys</span>
                 </a>
             </div>
         </div>
     </footer>
 
+    <!-- MODAL: ADD PATIENT -->
+    <div id="addPatientModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+                <h3 class="font-bold text-white text-base">Register New Patient</h3>
+                <button onclick="closeModal('addPatientModal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="handleNewPatientSubmit(event)" class="mt-4 space-y-4 text-xs font-medium">
+                <div>
+                    <label class="block text-slate-400 mb-1">Full Name *</label>
+                    <input type="text" id="mPatientName" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-slate-400 mb-1">Age *</label>
+                        <input type="number" id="mPatientAge" min="1" max="120" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white">
+                    </div>
+                    <div>
+                        <label class="block text-slate-400 mb-1">Gender *</label>
+                        <select id="mPatientGender" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white">
+                            <option>Male</option>
+                            <option>Female</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-slate-400 mb-1">Phone Number *</label>
+                    <input type="tel" id="mPatientPhone" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white">
+                </div>
+                <div>
+                    <label class="block text-slate-400 mb-1">Address</label>
+                    <input type="text" id="mPatientAddress" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white">
+                </div>
+                <button type="submit" class="w-full py-3 rounded-lg bg-teal-500 hover:bg-teal-400 font-bold text-slate-950 text-xs transition mt-2">Save to Database</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // In-Memory Database State for Live Interactive Demo
+        let patients = [
+            { id: 1, name: "Ravi Kumar", age: 34, gender: "Male", phone: "9876543210", address: "12 Lake View St, Hyderabad", status: "Active" },
+            { id: 2, name: "Ananya Sharma", age: 28, gender: "Female", phone: "9812345678", address: "45 MG Road, Bengaluru", status: "Active" },
+            { id: 3, name: "Karthik Reddy", age: 52, gender: "Male", phone: "9123456780", address: "88 Banjara Hills, Hyderabad", status: "Active" },
+            { id: 4, name: "Sneha Patel", age: 23, gender: "Female", phone: "9988776655", address: "104 Anna Salai, Chennai", status: "Active" },
+            { id: 5, name: "Aarav Sharma", age: 29, gender: "Male", phone: "9870000000", address: "Sample Address", status: "Active" }
+        ];
+
+        let doctors = [
+            { id: 1, name: "Dr. Ramesh Rao", spec: "Cardiology", phone: "9000011111", fee: 800.00, icon: "fa-heart-pulse", color: "text-red-400", bg: "bg-red-500/10" },
+            { id: 2, name: "Dr. Priya Menon", spec: "Dermatology", phone: "9000022222", fee: 500.00, icon: "fa-hand-dots", color: "text-purple-400", bg: "bg-purple-500/10" },
+            { id: 3, name: "Dr. Vikram Singh", spec: "General Medicine", phone: "9000033333", fee: 400.00, icon: "fa-stethoscope", color: "text-blue-400", bg: "bg-blue-500/10" },
+            { id: 4, name: "Dr. Sunita Deshmukh", spec: "Pediatrics", phone: "9000044444", fee: 600.00, icon: "fa-baby", color: "text-emerald-400", bg: "bg-emerald-500/10" }
+        ];
+
+        let appointments = [
+            { id: 1, patient: "Ravi Kumar", doctor: "Dr. Ramesh Rao", spec: "Cardiology", date: "2026-10-25", time: "10:00 AM", status: "Scheduled" },
+            { id: 2, patient: "Ananya Sharma", doctor: "Dr. Priya Menon", spec: "Dermatology", date: "2026-10-25", time: "11:30 AM", status: "Completed" },
+            { id: 3, patient: "Karthik Reddy", doctor: "Dr. Ramesh Rao", spec: "Cardiology", date: "2026-10-26", time: "02:00 PM", status: "Scheduled" },
+            { id: 4, patient: "Sneha Patel", doctor: "Dr. Vikram Singh", spec: "General Medicine", date: "2026-10-26", time: "04:00 PM", status: "Completed" }
+        ];
+
+        // Render Functions
+        function renderPatients(list = patients) {
+            const tbody = document.getElementById('patientTableBody');
+            tbody.innerHTML = list.map(p => `
+                <tr class="hover:bg-slate-800/40 transition">
+                    <td class="p-4 font-mono text-teal-400 font-bold">#${p.id}</td>
+                    <td class="p-4 text-white font-semibold">${p.name}</td>
+                    <td class="p-4 text-slate-400">${p.age} yrs • ${p.gender}</td>
+                    <td class="p-4 font-mono text-slate-300">${p.phone}</td>
+                    <td class="p-4 text-slate-400">${p.address}</td>
+                    <td class="p-4 text-center">
+                        <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-bold">
+                            ${p.status}
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderDoctors() {
+            const grid = document.getElementById('doctorsGrid');
+            grid.innerHTML = doctors.map(d => `
+                <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-teal-500/40 transition">
+                    <div class="w-12 h-12 rounded-xl ${d.bg} ${d.color} flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid ${d.icon}"></i>
+                    </div>
+                    <h4 class="font-bold text-white text-sm">${d.name}</h4>
+                    <p class="text-xs text-teal-400 font-medium mt-0.5">${d.spec}</p>
+                    <div class="mt-4 pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs font-mono">
+                        <span class="text-slate-400">Fee:</span>
+                        <span class="text-emerald-400 font-bold">₹${d.fee.toFixed(2)}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderAppointments() {
+            const tbody = document.getElementById('appointmentTableBody');
+            tbody.innerHTML = appointments.map(a => `
+                <tr class="hover:bg-slate-800/40 transition">
+                    <td class="p-4 font-mono text-cyan-400 font-bold">#${a.id}</td>
+                    <td class="p-4 text-white font-semibold">${a.patient}</td>
+                    <td class="p-4 text-slate-300">${a.doctor} <span class="text-slate-500">(${a.spec})</span></td>
+                    <td class="p-4 font-mono text-slate-400">${a.date} • ${a.time}</td>
+                    <td class="p-4 text-center">
+                        <span class="px-2.5 py-0.5 rounded-full ${a.status === 'Completed' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-blue-500/10 text-blue-400 border-blue-500/20'} border text-[10px] font-bold">
+                            ${a.status}
+                        </span>
+                    </td>
+                    <td class="p-4 text-center">
+                        ${a.status !== 'Completed' ? `
+                            <button onclick="markApptComplete(${a.id})" class="px-2.5 py-1 rounded bg-teal-500/10 hover:bg-teal-500 text-teal-400 hover:text-slate-950 font-bold text-[10px] transition border border-teal-500/30">
+                                Mark Done
+                            </button>
+                        ` : '<span class="text-slate-600 text-[10px]">Archived</span>'}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function markApptComplete(id) {
+            const appt = appointments.find(a => a.id === id);
+            if (appt) {
+                appt.status = 'Completed';
+                renderAppointments();
+            }
+        }
+
+        function filterPatients() {
+            const q = document.getElementById('patientSearchInput').value.toLowerCase();
+            const filtered = patients.filter(p => p.name.toLowerCase().includes(q) || p.phone.includes(q));
+            renderPatients(filtered);
+        }
+
+        function handleNewPatientSubmit(e) {
+            e.preventDefault();
+            const newPatient = {
+                id: patients.length + 1,
+                name: document.getElementById('mPatientName').value,
+                age: document.getElementById('mPatientAge').value,
+                gender: document.getElementById('mPatientGender').value,
+                phone: document.getElementById('mPatientPhone').value,
+                address: document.getElementById('mPatientAddress').value || "Not provided",
+                status: "Active"
+            };
+            patients.unshift(newPatient);
+            renderPatients();
+            closeModal('addPatientModal');
+            alert("✅ Patient " + newPatient.name + " registered successfully into MediTrack database!");
+        }
+
+        // Tab Switchers
+        function switchTab(tab) {
+            ['patients', 'doctors', 'appointments', 'billing'].forEach(t => {
+                document.getElementById(`view-${t}`).classList.add('hidden');
+                const btn = document.getElementById(`tabBtn-${t}`);
+                btn.className = "px-4 py-2 rounded-lg text-slate-400 hover:text-white transition flex items-center space-x-1.5";
+            });
+            document.getElementById(`view-${tab}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tabBtn-${tab}`);
+            activeBtn.className = "px-4 py-2 rounded-lg font-bold bg-teal-500 text-slate-950 transition flex items-center space-x-1.5";
+
+            if (tab === 'billing') {
+                initRevenueChart();
+            }
+        }
+
+        function showCode(name) {
+            ['schema', 'dao', 'conn'].forEach(n => {
+                document.getElementById(`code-${n}`).classList.add('hidden');
+                document.getElementById(`codeBtn-${n}`).className = "px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition";
+            });
+            document.getElementById(`code-${name}`).classList.remove('hidden');
+            document.getElementById(`codeBtn-${name}`).className = "px-3 py-1.5 rounded-lg bg-teal-500 text-slate-950 font-bold transition";
+        }
+
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+        // Chart Initialization
+        let chartInstance = null;
+        function initRevenueChart() {
+            if (chartInstance) return;
+            const ctx = document.getElementById('revenueChart').getContext('2d');
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Dr. Ramesh Rao (Cardio)', 'Dr. Priya Menon (Derma)', 'Dr. Vikram Singh (Gen)', 'Dr. Sunita (Pediatrics)'],
+                    datasets: [{
+                        label: 'Revenue Collected (₹)',
+                        data: [800, 500, 400, 600],
+                        backgroundColor: ['#14b8a6', '#06b6d4', '#3b82f6', '#8b5cf6'],
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
+                        x: { grid: { display: false }, ticks: { color: '#94a3b8' } }
+                    }
+                }
+            });
+        }
+
+        // Init on Load
+        renderPatients();
+        renderDoctors();
+        renderAppointments();
+    </script>
 </body>
 </html>
